@@ -8,9 +8,8 @@
 
 import { IChartOptions } from "@/Charter";
 import { Highcharter } from "./Highcharter";
-import { TreeLayout } from "@/TreeLayout";
 import SVGHelper from "@/utils/svg";
-
+import TreeLayout, { Tree } from "@/treelayout/TreeLayout";
 export type NodeInput = [string | undefined, string, number];
 
 export interface Node {
@@ -39,7 +38,7 @@ type Leaf = {
   x: number;
   y: number;
   name: string;
-  linkedTo: number;
+  linkedTo: [number, number]; // x,y
 };
 
 type LeafNameMap = Record<string, Leaf>;
@@ -78,117 +77,61 @@ export default class GenusTree extends Highcharter {
     //   }
     // });
   }
+
   static parseNodes(nodes: any) {
-    let _treeLayout: TreeLayout = new TreeLayout({
+    const layout = new TreeLayout({
       nodeSpacing: 0.5,
       levelSpacing: 1,
       nodeSize: 0.5,
     });
 
-    const nodeGroups = nodes;
-
-    let series: {}[] = [];
-
+    let series: any[] = [];
     let categories: string[] = [];
-
     let leafs: LeafNameMap = {};
+    nodes.forEach((group: any) => {
+      const groupTree = layout.addGroup(group);
 
-    nodeGroups.forEach((nodeGroup: any) => {
+      let xOffset = groupTree._x.min < 0 ? Math.abs(groupTree._x.min) : 0;
+
       let points: Point[] = [];
+
       let links: Link[] = [];
-      let point: Point | undefined;
 
-      _treeLayout?.calculateLayout(
-        nodeGroup,
-        (node: any, layout: TreeLayout, parent: any) => {
-          let xOffset = layout._x.min < 0 ? Math.abs(layout._x.min) : 0;
+      layout._walk(groupTree, (tree: Tree, params: any) => {
+        const point: Point = {
+          x: tree.x + xOffset,
+          y: tree.y,
+          name: tree.name,
+          z: tree.length,
+          isLeaf: tree.isLeaf,
+        };
 
-          if (node.y === 0) {
-            point = {
-              x: node.x + xOffset,
-              y: node.y,
-              name: node.name,
-              z: node.value,
-              isLeaf: node.children && node.children.length ? false : true,
-            };
-            points.push(point);
-            return;
-          }
+        points.push(point);
 
-          // if (node.y === 1) {
-          // links.push([node.x + xOffset, -1, node.x + xOffset, -1]);
-          // }
-
-          if (node.children && node.children.length > 1) {
-            // y Link
-            links.push([
-              node.children[0].x + xOffset,
-              node.y + 1,
-              node.children[node.children.length - 1].x + xOffset,
-              node.y + 1,
-            ]);
-          }
-
-          point = {
-            x: node.x + xOffset,
-            y: node.y,
-            name: node.name,
-            z: node.value,
-            isLeaf: node.children && node.children.length ? false : true,
+        if (point.isLeaf) {
+          point.y = 12;
+          let leafName = tree.name.replace(/\'/g, "");
+          categories.push(leafName);
+          leafs[leafName] = {
+            ...point,
+            name: leafName,
+            linkedTo: [params.parent.x + xOffset, tree.y],
           };
-          points.push(point);
+        } else {
+          const children = tree.children as Tree[];
+          links.push([
+            children[0].x + xOffset,
+            point.y + 1,
+            children[children.length - 1].x + xOffset,
+            point.y + 1,
+          ]);
 
-          if (!point.isLeaf) {
-            // x link
-            links.push([
-              node.x + xOffset,
-              parent && node.y === parent.stats.y.max
-                ? parent.stats.y.min
-                : node.y,
-              node.x + xOffset,
-              node.y + 1,
-            ]);
-          } else {
-            let leafName = point.name.replace(/\'/g, "");
-            categories.push(leafName);
-
-            leafs[leafName] = {
-              ...point,
-              name: point.name.replace(/\'/g, ""),
-              y: point.y + 1,
-              linkedTo:
-                parent && node.y === parent.stats.y.max
-                  ? parent.stats.y.min
-                  : node.y,
-            };
+          if (params.parent) {
+            // console.log(leafs[])
+            links.push([point.x, params.parent.y + 1, point.x, tree.y + 1]);
           }
-
-          if (parent && parent.y === 0) {
-            links.push([
-              node.x + xOffset,
-              layout._y.min,
-              node.x + xOffset,
-              node.y,
-            ]);
-          }
-        },
-        (node: any, layout: TreeLayout) => {
-          if (node.isLeaf) {
-            node.y = layout._y.max;
-            // layout._calcExtremes(node.y, node.states._y);
-          } else {
-            if (node.y !== layout._y.min) {
-              // let min = Infinity;
-              let es = { ...TreeLayout.initalExtremes };
-              node.children.forEach((child: any) => {
-                layout._calcExtremes(child.y, es);
-              });
-              node.stats.y = es;
-              node.y = node.stats.y.min - 1;
-            }
-          }
-        },
-      );
+        }
+      });
 
       // series.push({
       //   type: "scatter",
@@ -207,72 +150,20 @@ export default class GenusTree extends Highcharter {
         data: links,
         color: "#000",
         pane: 0,
+        zIndex: 1,
         showInLegend: false,
         // linkedTo: ":previous",
       });
-
-      // series.push({
-      //   type: "scatter",
-      //   data: leafs,
-      //   marker: {
-      //     radius: 5,
-      //   },
-      //   pane: 0,
-      //   dataLabels: {
-      //     enabled: true,
-      //     format: "{point.name}",
-      //   },
-      // });
-
-      // series.push({
-      //   type: "arcarea",
-      //   dataLabels: {
-      //     y: 0.5,
-      //     style: {
-      //       fontWeight: "normal",
-      //     },
-      //     position: function (p: any) {
-      //       const series: any = this,
-      //         xAxis = series.xAxis,
-      //         x = p.x + 0.5,
-      //         xAxisMid = xAxis.min + (xAxis.max - xAxis.min) / 2;
-      //       let rotation =
-      //           ((xAxis.startAngleRad + xAxis.translate(x)) / Math.PI) * 180,
-      //         anchor = "start";
-
-      //       if (x >= xAxisMid) {
-      //         rotation -= 180;
-      //         anchor = "end";
-      //       }
-
-      //       return {
-      //         rotation,
-      //         anchor,
-      //       };
-      //     },
-      //     // verticalAlign: "middle",
-      //   },
-      //   data: leafs.map((l) => {
-      //     return {
-      //       x: l.x - 0.5,
-      //       y: l.y,
-      //       x1: l.x + 0.5,
-      //       y1: l.y + 8,
-      //       name: l.name,
-      //       color: l.color,
-      //     };
-      //   }),
-      // });
     });
 
     return {
-      _layout: _treeLayout,
+      categories,
       leafs,
       series,
       yAxis: {
         min: 0,
         tickInterval: 1,
-        max: _treeLayout._y.max + 1,
+        max: layout.root._y.max + 1,
         endOnTick: false,
         gridLineWidth: 0,
         lineWidth: 0,
@@ -331,13 +222,18 @@ export default class GenusTree extends Highcharter {
             throw new Error(
               `Category "${category}" do not exist in Newick Data`,
             );
+
           return {
             name: leaf.name,
             x: leaf.x - 0.5,
-            y: leaf.y,
+            y: leaf.y + 1,
             x1: leaf.x + 0.5,
             yLength: size,
-            linker: [leaf.y, leaf.linkedTo],
+            linker: [
+              [leaf.x, leaf.y + 1],
+              [leaf.x, leaf.linkedTo[1]],
+              [leaf.linkedTo[0], leaf.linkedTo[1]],
+            ],
             // TODO
           };
         }),
@@ -404,7 +300,6 @@ export default class GenusTree extends Highcharter {
             fontSize: "0.7em",
             fontFamily:
               '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif',
-            bold: false,
           }),
         ),
       ) +
@@ -464,7 +359,7 @@ export default class GenusTree extends Highcharter {
           borderWith: 0.5,
           borderColor: "#fff",
           dataLabels: {
-            enabled: true,
+            enabled: false,
             // offsetY: 0.5,
             y: acrAreaDataLabelPadding,
             style: {
@@ -494,12 +389,13 @@ export default class GenusTree extends Highcharter {
         },
       },
       series: [
-        ...arcarea.map((s: any) => {
+        ...result.series.map((s: any) => {
           s.xAxis = 0;
           s.yAxis = 0;
           return s;
         }),
-        ...result.series.map((s: any) => {
+        // TODO: 简称顺序是否合理
+        ...arcarea.map((s: any) => {
           s.xAxis = 0;
           s.yAxis = 0;
           return s;
