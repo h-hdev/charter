@@ -7,7 +7,18 @@ const series = [
     type: "circos",
     data: links,
     nodeWidth: 14,
-    subNodeOffset: 100,
+    dataLabels: {
+      enabled: false,
+      style: {
+        fontWeight: "normal",
+      },
+    },
+    subNode: {
+      enabled: false,
+      offset: 100,
+      tick: false,
+      count: 2,
+    },
   },
 ];
 export default {
