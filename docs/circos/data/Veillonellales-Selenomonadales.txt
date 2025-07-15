@@ -1,0 +1,17 @@
+Veillonellales-Selenomonadales	0	324089	A8	694900	370811
+Veillonellales-Selenomonadales	324089	592329	B4	758531	490291
+Veillonellales-Selenomonadales	592329	798586	B5	941743	735486
+Veillonellales-Selenomonadales	798586	949932	A9	810576	659230
+Veillonellales-Selenomonadales	949932	1101075	A5	829564	678421
+Veillonellales-Selenomonadales	1101075	1198373	B3	953532	856234
+Veillonellales-Selenomonadales	1198373	1241901	B2	903413	859885
+Veillonellales-Selenomonadales	1241901	1271334	A2	786215	756782
+Veillonellales-Selenomonadales	1271334	1299550	B8	972875	944659
+Veillonellales-Selenomonadales	1299550	1323355	A7	919562	895757
+Veillonellales-Selenomonadales	1323355	1347008	B1	930336	906683
+Veillonellales-Selenomonadales	1347008	1365312	A3	946864	928560
+Veillonellales-Selenomonadales	1365312	1375351	B6	962835	952796
+Veillonellales-Selenomonadales	1375351	1376188	A6	942733	941896
+Veillonellales-Selenomonadales	1376188	1376518	A4	897176	896846
+Veillonellales-Selenomonadales	1376518	1376721	B7	898011	897808
+Veillonellales-Selenomonadales	1376721	1376848	A1	939107	938980

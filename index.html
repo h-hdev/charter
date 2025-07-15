@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css"
+        />
+        <style>
+            body {
+                padding: 0;
+                margin: 0;
+                overflow-x: hidden;
+            }
+
+            #app {
+                width: 100vw;
+                height: 100vh;
+                /* display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center; */
+            }
+
+            .flex {
+                display: flex;
+            }
+
+            .w-full {
+                width: 100%;
+            }
+
+            .h-full {
+                height: 100%;
+            }
+
+            .border {
+                border: 1px solid #aaa;
+            }
+
+            .highcharts-legend-box:hover {
+                stroke: red;
+                stroke-width: 1;
+            }
+            /* .page {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(3, 1fr);
+                gap: 10px;
+                box-sizing: border-box;
+            } */
+            /* .grid-item {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		} */
+        </style>
+    </head>
+
+    <body>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+
+        <!-- and it's easy to individually load additional languages -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/json.min.js"></script>
+        <div id="app"></div>
+        <!-- <script>
+
+		let pageSize = [1270, 1780];
+
+		let photoSize = 500;
+
+		let gap = [20, 20];
+
+		let layout = [2, 3];
+
+		let scale = 0.5;
+
+
+
+		let page = document.createElement('div');
+		page.style.width = pageSize[0] * scale + 'px';
+		page.style.height = pageSize[1] * scale + 'px';
+		page.style.background = '#fff';
+		page.className = 'page';
+		page.style.padding = [
+			(pageSize[1] * scale - photoSize * layout[1] * scale - gap[1] * (layout[1] - 1) * scale) / 2 + 'px',
+			(pageSize[0] * scale - photoSize * layout[0] * scale - gap[0] * (layout[0] - 1) * scale) / 2 + 'px',
+		].join(' ');
+		let app = document.querySelector('#app');
+
+		app.appendChild(page);
+
+
+		for (let i = 0; i < layout[0]; i++) {
+			for (let j = 0; j < layout[1]; j++) {
+
+				let item = document.createElement('div');
+				item.className = 'grid-item';
+
+				page.appendChild(item);
+
+
+
+				let photo = document.createElement('div');
+				photo.className = 'photo'
+				photo.style.width = photoSize * scale + 'px';
+				photo.style.height = photoSize * scale + 'px';
+				photo.style.background = '#ccc';
+				// photo.style.border = ' 1px solid #000';
+				photo.style.borderRadius = '5px'
+
+				item.appendChild(photo);
+			}
+		}
+
+
+	</script> -->
+        <script src="src/index.ts" type="module"></script>
+    </body>
+</html>
