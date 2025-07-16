@@ -1,0 +1,10 @@
+source,source_group,target,target_group,coefficient
+Negativibacillus,Firmicutes,Olsenella,Actinobacteriota,0.96875
+Turicibacter,Firmicutes,Clostridium_sensu_stricto_1,Firmicutes,0.953462589245592
+Fournierella,Firmicutes,Methanobrevibacter,Euryarchaeota,0.96875
+Fournierella,Firmicutes,Acidaminococcus,Firmicutes,0.96875
+Methanobrevibacter,Euryarchaeota,Catenibacterium,Firmicutes,0.96875
+Lachnospiraceae_UCG-001,Firmicutes,Pyramidobacter,Synergistota,0.96875
+Acidaminococcus,Firmicutes,Catenibacterium,Firmicutes,0.96875
+Megasphaera,Firmicutes,Prevotella,Bacteroidota,0.976470588235294
+Christensenellaceae_R-7_group,Firmicutes,UCG-005,Firmicutes,0.945454545454545
