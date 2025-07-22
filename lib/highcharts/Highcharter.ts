@@ -17,13 +17,15 @@ series(Highcharts);
 import Plugins from "./plugins/index.js";
 Plugins(Highcharts);
 
+import Utils from "@/utils/index.js";
+
 export class Highcharter extends Plot {
   public chart: Highcharts.Chart | undefined;
 
   defaultOptions: IChartOptions = {};
 
   beforeInit(): void {
-    console.log("high");
+    console.log("highcharter");
   }
 
   destory(): void {
@@ -39,8 +41,29 @@ export class Highcharter extends Plot {
   }
 
   setOptions(options: Record<string, any>): void {
-    console.log(options);
-    throw new Error("Method not implemented.");
+    const arrayObject = ["series", "xAxis", "yAxis", "legends"];
+    Object.keys(options).forEach((key) => {
+      if (arrayObject.includes(key)) {
+        options[key].forEach((op: any, index: number) => {
+          if (op !== undefined) {
+            this.obj.chart[key][index].update(op, false);
+          }
+        });
+        delete options[key];
+      }
+    });
+
+    if (Object.keys(options).length) {
+      this.obj.chart.update(options);
+    } else {
+      this.obj.chart.redraw();
+    }
+  }
+
+  setOption(key: string, value: any): void {
+    key = key.replace(/\[(\d)\]/, (match, p1) => "." + p1);
+    let options = Utils.set({}, key, value);
+    this.setOptions(options);
   }
 
   render(): void {
@@ -54,7 +77,7 @@ export class Highcharter extends Plot {
 
   afterRender() {}
 
-  getVizOptions() {
+  getVizOptions(): any[] {
     throw new Error("Method not implemented.");
   }
   export(type: ExportType, filanem: string, options?: IChartOptions): void {

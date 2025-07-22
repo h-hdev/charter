@@ -10,6 +10,7 @@ import { IChartOptions } from "@/Charter";
 import { Highcharter } from "./Highcharter";
 import SVGHelper from "@/utils/svg";
 import TreeLayout, { Tree } from "@/treelayout/TreeLayout";
+import GenusTreeVizOptions from "./GenusTreeVizOptions";
 export type NodeInput = [string | undefined, string, number];
 
 export interface Node {
@@ -364,6 +365,8 @@ export default class GenusTree extends Highcharter {
             y: acrAreaDataLabelPadding,
             style: {
               fontWeight: "normal",
+              fontSize: "12px",
+              color: "#333",
             },
             position: function (p: any) {
               const series: any = this,
@@ -433,6 +436,10 @@ export default class GenusTree extends Highcharter {
     return nodeGroups;
   }
 
+  getVizOptions() {
+    return GenusTreeVizOptions.call(this);
+  }
+
   _getOptions(): IChartOptions {
     this.defaultOptions = {
       chart: {
@@ -472,6 +479,22 @@ export default class GenusTree extends Highcharter {
         bubble: {
           maxSize: 10,
           minSize: 3,
+        },
+      },
+      legend: {
+        squareSymbol: false,
+        symbolRadius: 0,
+        symbolWidth: 20,
+        symbolHeight: 10,
+        title: {
+          style: {
+            fontSize: "14px",
+            fontWeight: "bold",
+            color: "#000",
+          },
+        },
+        itemStyle: {
+          fontSize: "13px",
         },
       },
     };

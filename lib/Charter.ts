@@ -9,6 +9,7 @@ export type ExportType = (typeof ExportFileType)[number];
 export abstract class VizBase {
   abstract render(): void;
   abstract setOptions(options: Record<string, any>): void;
+  abstract setOption(key: string, value: any): void;
   abstract getVizOptions(): any;
   abstract export(
     type: ExportType,
@@ -98,7 +99,7 @@ export class Charter implements VizBase {
   render(): void {
     this.#inst?.render();
   }
-  getVizOptions() {
+  getVizOptions(): any[] {
     return this.#inst?.getVizOptions();
   }
   export(type: ExportType, filename: string, options?: IChartOptions): void {
@@ -121,6 +122,12 @@ export class Charter implements VizBase {
   destory() {
     this.#inst?.destory();
     // TODO;
+  }
+
+  setOption(key: string, value: any) {
+    if (this.#inst) {
+      this.#inst.setOption(key, value);
+    }
   }
 
   setOptions(options: Record<string, any>) {

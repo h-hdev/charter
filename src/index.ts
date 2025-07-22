@@ -1,3 +1,4 @@
+import { Charter } from "@/Charter";
 import demos from "./demo";
 
 const app: HTMLDivElement | null = document.querySelector("#app");
@@ -11,8 +12,9 @@ app.className = "flex";
 // app.appendChild(sampleData);
 
 const options = document.createElement("div");
-options.className = "h-full border panel";
+options.className = "h-full border panel w-full";
 options.style.padding = "2em";
+options.style.width = "20%";
 app.appendChild(options);
 
 let title = document.createElement("h3");
@@ -28,23 +30,32 @@ select.innerHTML = demos
 options.appendChild(select);
 
 select.addEventListener("change", () => {
-  createDemo(parseInt(select.value), true);
+  window.location.href = "index.html?t=" + demos[parseInt(select.value)].code;
+  // createDemo(parseInt(select.value), true);
 });
 
 title = document.createElement("h3");
 title.innerText = "示例数据";
 options.appendChild(title);
 const sampleData = document.createElement("pre");
-sampleData.style.width = "800px";
+// sampleData.style.width = "800px";
 sampleData.style.maxHeight = "500px";
 sampleData.style.overflowY = "auto";
 sampleData.style.padding = "1em";
 sampleData.className = "language-json";
 options.appendChild(sampleData);
 
+const interactiveContainer = document.createElement("div");
+interactiveContainer.className = "h-full border panel w-full";
+interactiveContainer.style.padding = "1em 2em";
+interactiveContainer.style["overflowY"] = "auto";
+
+app.appendChild(interactiveContainer);
+interactiveContainer.style.width = "30%";
+
 const chart = document.createElement("div");
 chart.className = "h-full border panel";
-chart.style.width = "1200px";
+chart.style.width = "50%";
 app.appendChild(chart);
 
 const chartContainer = document.createElement("div");
@@ -53,12 +64,36 @@ chartContainer.style.width = "1200px";
 chartContainer.style.height = "1200px";
 chart.appendChild(chartContainer);
 
-let demo: any;
+let demo: Charter;
+
+let interactive;
 function createDemo(index: number, updateLocation?: boolean) {
   if (demo) {
     demo.destory();
   }
   demo = demos[index].demo(chartContainer);
+
+  interactive = new (window as any).DatGui(
+    interactiveContainer,
+    demo.getVizOptions(),
+    (code: string, value: any, widget: any) => {
+      console.log(code, value);
+      demo.setOption(code, value);
+      // if (widget.options.group === 'export') {
+      // 	this.exportOptions[code] = value;
+      // 	return false;
+      // }
+      // if (code === 'position' || code === 'size') {
+      // 	this.chart.update(code, value);
+      // } else {
+      // 	let newOptions = Utils.set({}, code, value);
+      // 	this.chart.update(newOptions);
+      // }
+    },
+  );
+
+  console.log(interactive);
+
   sampleData.innerHTML = JSON.stringify(
     demos[index].sampleData,
     undefined,

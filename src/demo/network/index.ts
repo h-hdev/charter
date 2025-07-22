@@ -3,6 +3,8 @@ import { Demo } from "../index";
 
 import { nodes, links } from "./data";
 
+let chart;
+
 export default {
   name: "Network",
   code: "network",
@@ -13,7 +15,7 @@ export default {
     },
   },
   demo: (container: HTMLElement) => {
-    let chart = new Chart(container, "network", {
+    chart = new Chart(container, "network", {
       title: {
         text: "network",
       },

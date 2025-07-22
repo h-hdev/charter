@@ -1,6 +1,7 @@
 import { IChartOptions } from "@/Charter";
 import { Highcharter } from "./Highcharter";
 import * as Highcharts from "highcharts";
+import NetworkVizOptions from "./NetworkVizOptions";
 
 export type NodeGroupOptions = {
   name: string;
@@ -20,6 +21,9 @@ export type NodeOption = {
 };
 
 export default class Network extends Highcharter {
+  getVizOptions(): any[] {
+    return NetworkVizOptions.call(this);
+  }
   _getOptions(): IChartOptions {
     this.defaultOptions = {
       chart: {},
@@ -53,7 +57,7 @@ export default class Network extends Highcharter {
         ...networkOptions,
         links: undefined,
         type: "networkgraph",
-        data: networkOptions.links.map((l) => [l[0], l[1]]),
+        data: networkOptions.links.map((l: any) => [l[0], l[1]]),
         nodes: nodes,
       },
     ];

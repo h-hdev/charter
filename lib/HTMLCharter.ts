@@ -56,6 +56,10 @@ export default class HTMLCharter extends Plot {
     throw new Error("Method not implemented.");
   }
 
+  setOption(key: string, value: any) {
+    console.log(key, value);
+  }
+
   export(type: ExportType, filename: string, options?: IChartOptions): void {
     console.log(type, filename, options);
     throw new Error("Method not implemented.");
