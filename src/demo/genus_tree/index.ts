@@ -77,7 +77,7 @@ export default {
         },
         layout: "vertical",
         align: "right",
-        verticalAlign: "top",
+        // verticalAlign: "top",
       },
     });
 
