@@ -1,22 +1,9 @@
 import Network from "./Network";
-
+import { getBasicOptions } from "./VizOptions";
 export default function (this: Network) {
   const options = (this.obj.chart as any).options;
   return [
-    {
-      name: "基础配置",
-      code: "basic",
-      items: [
-        {
-          key: "colors",
-          type: "color",
-          name: "色系",
-          options: {
-            values: options.colors,
-          },
-        },
-      ],
-    },
+    getBasicOptions(options),
     {
       name: "数据列",
       code: "series",

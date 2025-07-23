@@ -8,6 +8,7 @@ import "highcharts/modules/networkgraph";
 import "highcharts/highcharts-more";
 import "highcharts/modules/sankey";
 import "highcharts/modules/dependency-wheel";
+import "highcharts/modules/exporting";
 
 // Highcharts wrapper and series
 import wrapper from "./wrapper/index.js";
@@ -53,8 +54,16 @@ export class Highcharter extends Plot {
       }
     });
 
-    if (Object.keys(options).length) {
-      this.obj.chart.update(options);
+    console.log(options, "update");
+    const keys = Object.keys(options);
+    let keyLength = keys.length;
+    if (keyLength) {
+      if (keyLength === 1 && this.obj.chart[keys[0]]) {
+        let key = keys[0];
+        this.obj.chart[key].update(options[key]);
+      } else {
+        this.obj.chart.update(options, true, true);
+      }
     } else {
       this.obj.chart.redraw();
     }
@@ -63,7 +72,8 @@ export class Highcharter extends Plot {
   setOption(key: string, value: any): void {
     key = key.replace(/\[(\d)\]/, (match, p1) => "." + p1);
     let options = Utils.set({}, key, value);
-    this.setOptions(options);
+
+    this.setOptions({ ...options });
   }
 
   render(): void {
@@ -80,8 +90,25 @@ export class Highcharter extends Plot {
   getVizOptions(): any[] {
     throw new Error("Method not implemented.");
   }
-  export(type: ExportType, filanem: string, options?: IChartOptions): void {
-    console.log(type, filanem, options);
-    throw new Error("Method not implemented.");
+
+  _toExportFileType(type: ExportType) {
+    const typeMapping: Record<ExportType, string> = {
+      jpg: "image/jpeg",
+      pdf: "application/pdf",
+      png: "image/png",
+      svg: "image/svg+xml",
+    };
+
+    return typeMapping[type];
+  }
+
+  export(type: ExportType, filename: string, options?: IChartOptions): void {
+    this.chart?.exporting.exportChart(
+      {
+        type: this._toExportFileType(type) as any,
+        filename,
+      },
+      options,
+    );
   }
 }

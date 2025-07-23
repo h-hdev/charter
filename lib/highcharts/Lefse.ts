@@ -25,7 +25,13 @@ type Link = [number, number, number, number];
 
 export default class Lefse extends Highcharter {
   afterRender(): void {
-    console.log(this.chart);
+    // console.log(this.chart);
+    // setTimeout(() => {
+    //   this.obj.chart?.series[0].update({
+    //     color: "#006cee",
+    //   } as any);
+    //   console.log(this.obj.chart?.series[0]);
+    // }, 2000);
   }
   static parseHightlight(
     highlight: HighlightOption,
@@ -218,15 +224,17 @@ export default class Lefse extends Highcharter {
 
     Object.keys(chartOptions).forEach((key) => {
       if (key === "series") {
-        if (options.series) {
-          options.series = [...options.series, ...chartOptions.series];
-        } else {
-          options.series = chartOptions.series;
-        }
+        // if (options.series) {
+        //   options.series = [...options.series, ...chartOptions.series];
+        // } else {
+        options.series = chartOptions.series;
+        // }
       } else {
         options[key] = Highcharts.merge(options[key], chartOptions[key]);
       }
     });
+
+    console.log(options);
 
     return options;
   }

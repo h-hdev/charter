@@ -33,7 +33,7 @@
     "vite-plugin-dts": "^4.3.0"
   },
   "dependencies": {
-    "highcharts": "^12.2.0",
+    "highcharts": "12.3.0",
     "lodash.get": "4.4.2"
   }
 }

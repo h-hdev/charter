@@ -1,23 +1,10 @@
 import GenusTree from "./GenusTree";
-
+import { getBasicOptions } from "./VizOptions";
 export default function (this: GenusTree) {
   const options = (this.obj.chart as any).options;
   console.log(options);
   return [
-    {
-      name: "基础配置",
-      code: "basic",
-      items: [
-        {
-          key: "colors",
-          type: "color",
-          name: "色系",
-          options: {
-            values: this.options.colors,
-          },
-        },
-      ],
-    },
+    getBasicOptions(options),
     {
       name: "树相关配置",
       code: "tree",
@@ -109,6 +96,14 @@ export default function (this: GenusTree) {
       code: "legend",
       items: [
         {
+          key: "legend.title.text",
+          name: "图例1:标题文字",
+          type: "text",
+          options: {
+            value: this.options.legend.title.text,
+          },
+        },
+        {
           key: "legend.title.style",
           name: "标题样式",
           type: "font",
@@ -122,14 +117,6 @@ export default function (this: GenusTree) {
           type: "font",
           options: {
             value: options.legend.itemStyle,
-          },
-        },
-        {
-          key: "legend.title.text",
-          name: "图例1：文字",
-          type: "text",
-          options: {
-            value: this.options.legend.title.text,
           },
         },
         {
@@ -196,12 +183,32 @@ export default function (this: GenusTree) {
         },
         {
           key: "legends[0].title.text",
-          name: "图例2：文字",
+          name: "图例2：标题文字",
           type: "text",
           options: {
             value: this.options.legends[0].title.text,
           },
         },
+        {
+          key: "legends[0].title.style",
+          name: "标题样式",
+          type: "font",
+          options: {
+            value:
+              this.options.legends[0].title.style || options.legend.title.style,
+          },
+        },
+
+        {
+          key: "legends[0].itemStyle",
+          name: "文字样式",
+          type: "font",
+          options: {
+            value:
+              this.options.legends[0].itemStyle || options.legend.itemStyle,
+          },
+        },
+
         {
           key: "legends[0].layout",
           name: "布局",

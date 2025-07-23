@@ -1,23 +1,11 @@
 import Lefse from "./Lefse";
+import { getBasicOptions } from "./VizOptions";
 
 export default function (this: Lefse) {
   const options = (this.obj.chart as any).options;
   console.log(options);
   return [
-    {
-      name: "基础配置",
-      code: "basic",
-      items: [
-        {
-          key: "colors",
-          type: "color",
-          name: "色系",
-          options: {
-            values: options.colors,
-          },
-        },
-      ],
-    },
+    getBasicOptions(options),
     {
       name: "数据列配置",
       code: "tree",
@@ -134,7 +122,7 @@ export default function (this: Lefse) {
         // },
         {
           key: "legend.layout",
-          name: "布局",
+          name: "图例1：布局",
           type: "select",
           options: {
             items: [
@@ -204,7 +192,7 @@ export default function (this: Lefse) {
         // },
         {
           key: "legends[0].layout",
-          name: "布局",
+          name: "图例2：布局",
           type: "select",
           options: {
             items: [
