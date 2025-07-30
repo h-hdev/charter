@@ -19,6 +19,7 @@ import Plugins from "./plugins/index.js";
 Plugins(Highcharts);
 
 import Utils from "@/utils/index.js";
+import { getBasicOptions } from "./VizOptions.js";
 
 export class Highcharter extends Plot {
   public chart: Highcharts.Chart | undefined;
@@ -62,7 +63,12 @@ export class Highcharter extends Plot {
         let key = keys[0];
         this.obj.chart[key].update(options[key]);
       } else {
-        this.obj.chart.update(options, true, true);
+        // TODO: check other options
+        // copy object,
+        if (options.colors) {
+          options.colors = [...options.colors];
+        }
+        this.obj.chart.update(options);
       }
     } else {
       this.obj.chart.redraw();
@@ -77,6 +83,7 @@ export class Highcharter extends Plot {
   }
 
   render(): void {
+    console.log(this.options);
     this.obj = {
       chart: Highcharts.chart(this.container, this.options),
     };
@@ -88,7 +95,7 @@ export class Highcharter extends Plot {
   afterRender() {}
 
   getVizOptions(): any[] {
-    throw new Error("Method not implemented.");
+    return [getBasicOptions(this.obj.chart.options)];
   }
 
   _toExportFileType(type: ExportType) {

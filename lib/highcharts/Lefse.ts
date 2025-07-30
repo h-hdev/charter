@@ -27,10 +27,13 @@ export default class Lefse extends Highcharter {
   afterRender(): void {
     // console.log(this.chart);
     // setTimeout(() => {
-    //   this.obj.chart?.series[0].update({
-    //     color: "#006cee",
-    //   } as any);
-    //   console.log(this.obj.chart?.series[0]);
+    //   // this.obj.chart?.series[0].update({
+    //   //   color: "#006cee",
+    //   // } as any);
+    //   // console.log(this.obj.chart?.series[0]);
+    //   this.obj.chart.update({
+    //     colors: ["#006cee", "#000", "red"],
+    //   });
     // }, 2000);
   }
   static parseHightlight(
@@ -181,6 +184,12 @@ export default class Lefse extends Highcharter {
         gridLineWidth: 0,
       },
 
+      legend: {
+        itemStyle: {
+          fontSize: "13px",
+        },
+      },
+
       plotOptions: {
         series: {
           states: {
@@ -221,13 +230,12 @@ export default class Lefse extends Highcharter {
         },
       ];
     }
-
     Object.keys(chartOptions).forEach((key) => {
       if (key === "series") {
         // if (options.series) {
         //   options.series = [...options.series, ...chartOptions.series];
         // } else {
-        options.series = chartOptions.series;
+        options.series = [...chartOptions.series];
         // }
       } else {
         options[key] = Highcharts.merge(options[key], chartOptions[key]);

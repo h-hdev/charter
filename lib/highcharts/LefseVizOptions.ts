@@ -106,7 +106,7 @@ export default function (this: Lefse) {
         // },
         {
           key: "legend.itemStyle",
-          name: "文字样式",
+          name: "图例1：文字样式",
           type: "font",
           options: {
             value: options.legend.itemStyle,
@@ -122,7 +122,7 @@ export default function (this: Lefse) {
         // },
         {
           key: "legend.layout",
-          name: "图例1：布局",
+          name: "布局",
           type: "select",
           options: {
             items: [
@@ -182,17 +182,18 @@ export default function (this: Lefse) {
             value: 0,
           },
         },
-        // {
-        //   key: "legends[0].title.text",
-        //   name: "图例2：文字",
-        //   type: "text",
-        //   options: {
-        //     value: this.options.legends[0].title.text,
-        //   },
-        // },
+        {
+          key: "legends[0].itemStyle",
+          name: "图例2：文字样式",
+          type: "font",
+          options: {
+            value:
+              this.options.legends[0].itemStyle || options.legend.itemStyle,
+          },
+        },
         {
           key: "legends[0].layout",
-          name: "图例2：布局",
+          name: "布局",
           type: "select",
           options: {
             items: [
