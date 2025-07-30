@@ -44,6 +44,19 @@ export default function (this: Circos) {
             },
           },
         },
+        {
+          key: "series[0].linkOpacity",
+          type: "number",
+          name: "内圈连线透明度",
+          options: {
+            value: options.series[0].linkOpacity || 0.5,
+            attr: {
+              min: 0,
+              step: 0.1,
+              max: 1,
+            },
+          },
+        },
       ],
     },
     // {

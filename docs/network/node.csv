@@ -1,15 +1,89 @@
-name,group,score
-Negativibacillus,Firmicutes,1
-Turicibacter,Firmicutes,1
-Fournierella,Firmicutes,2
-Methanobrevibacter,Euryarchaeota,2
-Lachnospiraceae_UCG-001,Firmicutes,1
-Acidaminococcus,Firmicutes,2
-Megasphaera,Firmicutes,1
-Catenibacterium,Firmicutes,2
-Prevotella,Bacteroidota,1
-Olsenella,Actinobacteriota,1
-Clostridium_sensu_stricto_1,Firmicutes,1
-Christensenellaceae_R-7_group,Firmicutes,1
-UCG-005,Firmicutes,1
-Pyramidobacter,Synergistota,1
+name,group,score,module,type
+g__Bifidobacterium;s__Bifidobacterium longum,Actinobacteria,4,1,A
+g__Eubacterium;s__Eubacterium sp. CAG:180,Firmicutes,5,1,A
+g__Prevotella;s__Prevotella copri,Bacteroidetes,11,1,A
+g__Clostridium;s__Clostridium sp. CAG:417,Firmicutes,4,1,A
+g__Unclassified;s__Firmicutes bacterium CAG:114,Firmicutes,13,1,A
+g__Bifidobacterium;s__Bifidobacterium pseudocatenulatum,Actinobacteria,4,1,A
+g__Bifidobacterium;s__Bifidobacterium dentium,Actinobacteria,5,1,A
+g__Unclassified;s__[Eubacterium] rectale,Firmicutes,1,1,A
+g__Prevotella;s__Prevotella copri CAG:164,Bacteroidetes,8,1,A
+g__Lactobacillus;s__Lactobacillus agilis,Firmicutes,1,1,A
+g__Blautia;s__[Ruminococcus] torques,Firmicutes,14,1,A
+g__Blautia;s__Blautia sp. CAG:257,Firmicutes,21,1,A
+g__Holdemanella;s__Holdemanella biformis,Firmicutes,1,1,A
+g__Eubacterium;s__Eubacterium ventriosum,Firmicutes,2,1,A
+g__Ruminococcus;s__Ruminococcus callidus,Firmicutes,9,1,A
+g__Peptostreptococcus;s__Peptostreptococcus stomatis,Firmicutes,5,1,A
+g__Clostridium;s__uncultured Clostridium sp.,Firmicutes,10,1,A
+g__Alistipes;s__Alistipes finegoldii,Bacteroidetes,9,1,A
+g__Bacteroides;s__Bacteroides coprocola,Bacteroidetes,11,1,A
+g__Eubacterium;s__Eubacterium sp. CAG:251,Firmicutes,3,1,A
+g__Gemmiger;s__Gemmiger formicilis,Firmicutes,3,2,A
+g__Ruminococcus;s__Ruminococcus sp. CAG:177,Firmicutes,6,2,A
+g__Bifidobacterium;s__Bifidobacterium adolescentis,Actinobacteria,5,2,A
+g__Blautia;s__Blautia obeum,Firmicutes,28,2,A
+g__Clostridium;s__Clostridium sp. CAG:440,Firmicutes,3,2,A
+g__Blautia;s__Blautia sp. CAG:237,Firmicutes,16,2,A
+g__Ruminococcus;s__uncultured Ruminococcus sp.,Firmicutes,13,2,A
+g__Unclassified;s__Firmicutes bacterium CAG:227,Firmicutes,14,2,A
+g__Bacteroides;s__Bacteroides stercoris,Bacteroidetes,18,2,A
+g__Dorea;s__Dorea longicatena,Firmicutes,24,2,A
+g__Clostridium;s__Clostridium sp. CAG:127,Firmicutes,2,2,A
+g__Bifidobacterium;s__Bifidobacterium bifidum,Actinobacteria,5,2,A
+g__Adlercreutzia;s__Adlercreutzia equolifaciens,Actinobacteria,10,2,A
+g__Bacteroides;s__Bacteroides plebeius,Bacteroidetes,25,3,B
+g__Subdoligranulum;s__Subdoligranulum variabile,Firmicutes,3,3,B
+g__Collinsella;s__Collinsella aerofaciens,Actinobacteria,18,3,B
+g__Alistipes;s__Alistipes putredinis,Bacteroidetes,3,3,B
+g__Dorea;s__Dorea sp. CAG:105,Firmicutes,16,3,B
+g__Unclassified;s__Firmicutes bacterium CAG:124,Firmicutes,4,3,B
+g__Ruminococcus;s__Ruminococcus sp. CAG:254,Firmicutes,4,3,B
+g__Eubacterium;s__[Eubacterium] eligens,Firmicutes,1,3,B
+g__Fusicatenibacter;s__Fusicatenibacter saccharivorans,Firmicutes,13,3,B
+g__Klebsiella;s__Klebsiella pneumoniae,Proteobacteria,1,3,B
+g__Lactococcus;s__Lactococcus lactis,Firmicutes,5,3,B
+g__Ruthenibacterium;s__Ruthenibacterium lactatiformans,Firmicutes,2,3,B
+g__Eubacterium;s__uncultured Eubacterium sp.,Firmicutes,27,3,B
+g__Clostridium;s__Clostridium sp. CAG:302,Firmicutes,1,3,B
+g__Bacteroides;s__Bacteroides vulgatus,Bacteroidetes,16,3,B
+g__Blautia;s__Blautia wexlerae,Firmicutes,25,3,B
+g__Unclassified;s__Firmicutes bacterium CAG:321,Firmicutes,5,3,B
+g__Unclassified;s__bacterium OL-1,Unclassified,1,3,B
+g__Anaerostipes;s__Anaerostipes caccae,Firmicutes,13,3,B
+g__Anaerostipes;s__Anaerostipes sp. BG01,Firmicutes,2,3,B
+g__Streptococcus;s__Streptococcus salivarius,Firmicutes,2,3,B
+g__Clostridium;s__Clostridium sp. CAG:217,Firmicutes,6,3,B
+g__Unclassified;s__Firmicutes bacterium CAG:103,Firmicutes,7,3,B
+g__Escherichia;s__Escherichia coli,Proteobacteria,1,3,B
+g__Oscillibacter;s__Oscillibacter sp. CAG:241_62_21,Firmicutes,3,3,B
+g__Ruminococcus;s__Ruminococcus bicirculans,Firmicutes,4,3,B
+g__Blautia;s__[Ruminococcus] gnavus,Firmicutes,11,3,B
+g__Eubacterium;s__Eubacterium sp. CAG:274,Firmicutes,1,3,B
+g__Bifidobacterium;s__Bifidobacterium breve,Actinobacteria,6,3,B
+g__Clostridium;s__Clostridium sp. CAG:7,Firmicutes,7,4,B
+g__Eggerthella;s__Eggerthella lenta,Actinobacteria,8,4,B
+g__Unclassified;s__Firmicutes bacterium CAG:41,Firmicutes,15,4,B
+g__Subdoligranulum;s__Subdoligranulum sp. 60_17,Firmicutes,4,4,B
+g__Cryptobacterium;s__Cryptobacterium sp. CAG:338,Actinobacteria,3,4,B
+g__Clostridium;s__Clostridium sp. CAG:75,Firmicutes,4,4,B
+g__Bacteroides;s__Bacteroides fluxus,Bacteroidetes,18,4,B
+g__Ruminococcus;s__Ruminococcus sp. JC304,Firmicutes,26,4,B
+g__Parvimonas;s__Parvimonas micra,Firmicutes,6,4,B
+g__Coprococcus;s__Coprococcus eutactus,Firmicutes,5,4,B
+g__Butyricicoccus;s__uncultured Butyricicoccus sp.,Firmicutes,5,4,B
+g__Solobacterium;s__Solobacterium moorei,Firmicutes,3,4,B
+g__Bacteroides;s__Bacteroides uniformis,Bacteroidetes,20,4,B
+g__Clostridium;s__Clostridium sp. CAG:230,Firmicutes,9,4,B
+g__Blautia;s__Blautia sp. Marseille-P3087,Firmicutes,29,4,B
+g__Clostridium;s__Clostridium sp. CAG:567,Firmicutes,3,4,B
+g__Blautia;s__Blautia producta,Firmicutes,12,4,B
+g__Subdoligranulum;s__Subdoligranulum sp. 4_3_54A2FAA,Firmicutes,1,4,B
+g__Bacteroides;s__Bacteroides dorei,Bacteroidetes,16,4,B
+g__Clostridium;s__Clostridium sp. CAG:343,Firmicutes,3,4,B
+g__Romboutsia;s__Romboutsia timonensis,Firmicutes,9,4,B
+g__Eubacterium;s__[Eubacterium] hallii,Firmicutes,30,4,B
+g__Anaerotruncus;s__Anaerotruncus sp. CAG:528,Firmicutes,9,4,B
+g__Senegalimassilia;s__Senegalimassilia anaerobia,Actinobacteria,6,4,B
+g__Coprococcus;s__Coprococcus comes,Firmicutes,16,4,B
+g__Blautia;s__Blautia sp. KLE 1732,Firmicutes,25,4,B

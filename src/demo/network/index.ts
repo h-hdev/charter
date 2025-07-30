@@ -30,8 +30,9 @@ export default {
       network: {
         nodes,
         links,
+
         layoutAlgorithm: {
-          enableSimulation: false,
+          enableSimulation: true,
           initialPositions: "circle",
           integration: "euler",
           gravitationalConstant: 1,

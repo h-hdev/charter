@@ -47,7 +47,7 @@ export default class Network extends Highcharter {
           group: nodeGroup.name,
           color: nodeGroup.color as string,
           marker: {
-            radius: node[1] * 10,
+            radius: node[1] > 10 ? 10 : node[1],
           },
         });
       });

@@ -11,6 +11,7 @@ const series = [
     dataLabels: {
       enabled: true,
       style: {
+        color: "#333",
         fontSize: "12px",
         fontWeight: "normal",
       },
