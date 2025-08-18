@@ -16,6 +16,9 @@ const series = [
         fontWeight: "normal",
       },
     },
+    // tick: {
+    //   enabled: false,
+    // },
     subNode: {
       // enabled: false,
       offset: 100,

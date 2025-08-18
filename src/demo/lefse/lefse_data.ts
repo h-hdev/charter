@@ -21,7 +21,7 @@ k__Bacteria.p__Actinobacteriota.c__Actinobacteria.o__Corynebacteriales	1.6592695
 k__Bacteria.p__Actinobacteriota.c__Actinobacteria.o__Corynebacteriales.f__Corynebacteriaceae	1.659269534718918			-
 k__Bacteria.p__Actinobacteriota.c__Actinobacteria.o__Corynebacteriales.f__Corynebacteriaceae.g__Corynebacterium	1.659269534718918			-
 k__Bacteria.p__Actinobacteriota.c__Actinobacteria.o__Micrococcales	1.6470350783019059			-
-k__Bacteria.p__Actinobacteriota.c__Actinobacteria.o__Micrococcales.f__Micrococcaceae	1.6470350783019059			-
+k__Bacteria.p__Actinobacteriota.c__Actinoba cteria.o__Micrococcales.f__Micrococcaceae	1.6470350783019059			-
 k__Bacteria.p__Actinobacteriota.c__Actinobacteria.o__Micrococcales.f__Micrococcaceae.g__Rothia	1.6470350783019059			-
 k__Bacteria.p__Actinobacteriota.c__Coriobacteriia	4.098953031865428			-
 k__Bacteria.p__Actinobacteriota.c__Coriobacteriia.o__Coriobacteriales	4.098953031865428			-
@@ -373,28 +373,60 @@ k__Bacteria.p__Verrucomicrobiota.c__Verrucomicrobiae.o__Verrucomicrobiales.f__Ak
 k__Bacteria.p__Verrucomicrobiota.c__Verrucomicrobiae.o__Verrucomicrobiales.f__Akkermansiaceae.g__Akkermansia	4.869498849557281			-
 k__Bacteria.p__Verrucomicrobiota.c__Verrucomicrobiae.o__Verrucomicrobiales.f__Akkermansiaceae.g__Akkermansia.s__Akkermansia_muciniphila	4.868754761238495			-`;
 
-type InputLine = (string[] | number)[];
+// type InputLine = (string[] | number)[];
 
-const data: InputLine[] = input.split("\n").map((line) => {
-  return line
-    .replace("			-", "")
-    .split("	")
-    .map((d, i) => {
-      return i === 1 ? parseFloat(d) : d.split(".");
-    });
+let highlight = {};
+
+const data: string[][] = input.split("\n").map((line) => {
+  return line.replace("			-", "").split("	");
+
+  // let parts =
+
+  // // if (parts.length > 2) {
+  // //   highlight[]
+  // //   console.log(parts);
+  // // }
+
+  // // return [parts[0].split("."), parseFloat(parts[1])];
 });
 
 const nodeGroups: NodeOptions[][] = [];
 
 data.forEach((d) => {
-  if (typeof d[0] === "object") {
-    const name = d[0][d[0].length - 1];
-    const parent = d[0].length > 1 ? d[0][d[0].length - 2] : undefined;
-    if (parent === undefined) {
-      nodeGroups.push([]);
-    }
-
-    nodeGroups[nodeGroups.length - 1].push([parent, name, d[1] as number]);
+  let names = d[0].split(".");
+  let name: string = "",
+    parent: string | undefined = undefined;
+  if (names.length === 1) {
+    name = names[0];
+    parent = undefined;
+    nodeGroups.push([]);
+  } else {
+    name = names[names.length - 1];
+    parent = names[names.length - 2];
   }
+
+  let node: [string | undefined, string, number] = [
+    parent,
+    name,
+    parseFloat(d[1]),
+  ];
+
+  if (d.length > 2) {
+    // console.log(d);
+    node.push(d[2]);
+  }
+
+  nodeGroups[nodeGroups.length - 1].push(node);
+
+  // if (typeof d[0] === "object") {
+
+  //   // const name = d[0][d[0].length - 1];
+  //   // const parent = d[0].length > 1 ? d[0][d[0].length - 2] : undefined;
+  //   // if (parent === undefined) {
+  //   //   nodeGroups.push([]);
+  //   // }
+
+  //   // nodeGroups[nodeGroups.length - 1].push([parent, name, d[1] as number]);
+  // }
 });
 export default nodeGroups;

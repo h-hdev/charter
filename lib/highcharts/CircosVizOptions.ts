@@ -24,14 +24,14 @@ export default function (this: Circos) {
             value: this.options.series[0].dataLabels.style,
           },
         },
-        {
-          key: "series[0].subNode.enabled",
-          type: "checkbox",
-          name: "是否展示外层环",
-          options: {
-            value: this.options.series[0].subNode.enabled || true,
-          },
-        },
+        // {
+        //   key: "series[0].subNode.enabled",
+        //   type: "checkbox",
+        //   name: "是否展示外层环",
+        //   options: {
+        //     value: this.options.series[0].subNode.enabled || true,
+        //   },
+        // },
         {
           key: "series[0].subNode.count",
           type: "number",
@@ -55,6 +55,14 @@ export default function (this: Circos) {
               step: 0.1,
               max: 1,
             },
+          },
+        },
+        {
+          key: "series[0].tick.enabled",
+          type: "checkbox",
+          name: "是否展示刻度",
+          options: {
+            value: true,
           },
         },
       ],

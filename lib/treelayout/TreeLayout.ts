@@ -82,6 +82,7 @@ class TreeLayout {
         name: nodeOption[1],
         value: nodeOption[2],
         children: [],
+        groupName: nodeOption.length > 3 ? nodeOption[3] : undefined,
       };
       nodeNameMap[node.name] = node;
       if (nodeOption[0] === undefined) {

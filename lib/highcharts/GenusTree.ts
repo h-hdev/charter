@@ -150,6 +150,7 @@ export default class GenusTree extends Highcharter {
         type: "arctree",
         data: links,
         color: "#000",
+        id: "arctree",
         pane: 0,
         zIndex: 1,
         showInLegend: false,
@@ -229,6 +230,7 @@ export default class GenusTree extends Highcharter {
             x: leaf.x - 0.5,
             y: leaf.y + 1,
             x1: leaf.x + 0.5,
+            linkedTo: "arctree",
             yLength: size,
             linker: [
               [leaf.x, leaf.y + 1],
@@ -352,6 +354,7 @@ export default class GenusTree extends Highcharter {
         },
         {
           pane: pane.column.index,
+          showLastLabel: true,
         },
       ],
 
@@ -401,6 +404,7 @@ export default class GenusTree extends Highcharter {
         ...arcarea.map((s: any) => {
           s.xAxis = 0;
           s.yAxis = 0;
+
           return s;
         }),
         ...Object.keys(column).map((key: string) => {
@@ -438,6 +442,25 @@ export default class GenusTree extends Highcharter {
 
   getVizOptions() {
     return GenusTreeVizOptions.call(this);
+  }
+
+  setOption(key: string, value: any): void {
+    if (key === "plotOptions.arctree.marker.borderWidth") {
+      this.setOptions({
+        plotOptions: {
+          arctree: {
+            marker: {
+              borderWidth: value,
+            },
+          },
+          arcarea: {
+            borderWidth: value,
+          },
+        },
+      });
+    } else {
+      super.setOption(key, value);
+    }
   }
 
   _getOptions(): IChartOptions {

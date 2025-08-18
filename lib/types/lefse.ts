@@ -2,7 +2,7 @@
  * Node 配置
  * [from, to, value],  from = undefined 表示根节点
  */
-export type NodeOptions = [string | undefined, string, number];
+export type NodeOptions = [string | undefined, string, number, string?];
 
 /**
  * Node 组配置：相当 Highcharts 的 series 配置
@@ -54,9 +54,9 @@ export type HighlightOptions = {
  */
 export interface ILefseOption {
   // node 组
-  groups: NodeGroupOptions[];
+  groups: NodeOptions[][];
   // 高亮配置
-  highlight: HighlightOptions;
+  // highlight: HighlightOptions;
 
   groupPadding?: number; // 组间距
   // 图例配置

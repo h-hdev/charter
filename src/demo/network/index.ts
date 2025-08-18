@@ -30,7 +30,6 @@ export default {
       network: {
         nodes,
         links,
-
         layoutAlgorithm: {
           enableSimulation: true,
           initialPositions: "circle",

@@ -18,7 +18,8 @@ export default function (this: GenusTree) {
           },
         },
         {
-          key: "series[0].marker.borderWidth",
+          key: "plotOptions.arctree.marker.borderWidth",
+          // key: "series[0].marker.borderWidth",
           type: "number",
           name: "线条粗细",
           options: {

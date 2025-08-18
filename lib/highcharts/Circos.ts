@@ -16,9 +16,12 @@ export default class Circos extends Highcharter {
        * Note: 这应该是 Highcharts 的 bug，
        */
       this.obj.chart.series[0].nodes.forEach((node: any) => {
-        node.update({
-          color: colors[node.colorIndex],
-        });
+        node.color = colors[node.colorIndex];
+
+        console.log(node);
+        // node.update({
+        //   color: colors[node.colorIndex],
+        // }, false);
       });
     }
 

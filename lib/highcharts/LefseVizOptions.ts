@@ -11,7 +11,7 @@ export default function (this: Lefse) {
       code: "tree",
       items: [
         {
-          key: "plotOptions.bubble.marker.borderWidth",
+          key: "plotOptions.arcbubble.marker.borderWidth",
           type: "number",
           name: "线条粗细",
           options: {
@@ -19,19 +19,19 @@ export default function (this: Lefse) {
           },
         },
         {
-          key: "plotOptions.bubble.minSize",
+          key: "plotOptions.arcbubble.minSize",
           type: "number",
           name: "气泡最小大小",
           options: {
-            value: options.plotOptions.bubble.minSize,
+            value: options.plotOptions.arcbubble.minSize,
           },
         },
         {
-          key: "plotOptions.bubble.maxSize",
+          key: "plotOptions.arcbubble.maxSize",
           type: "number",
           name: "气泡最大大小",
           options: {
-            value: options.plotOptions.bubble.maxSize,
+            value: options.plotOptions.arcbubble.maxSize,
           },
         },
       ],
