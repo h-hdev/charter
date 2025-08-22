@@ -29,30 +29,34 @@ export default {
     lefse: lefseOptions,
   },
   demo: (container: HTMLElement) => {
-    let chart = new Chart(container, "lefse", {
-      title: {
-        text: "Cladogram",
-      },
-      lefse: lefseOptions,
-      legend: {
-        layout: "vertical",
-        align: "left",
-        verticalAlign: "top",
-        floating: true,
-      },
-      tooltip: {
-        format: "{point.name}: {point.z:.5f} at: {point.x}-{point.y}",
-      },
-      plotOptions: {
-        arcarea: {
-          dataLabels: {
-            verticalAlign: "top",
-            offsetY: 0.2,
-            autoRotation: true,
+    let chart = new Chart(
+      container,
+      {
+        title: {
+          text: "Cladogram",
+        },
+        lefse: lefseOptions,
+        legend: {
+          layout: "vertical",
+          align: "left",
+          verticalAlign: "top",
+          floating: true,
+        },
+        tooltip: {
+          format: "{point.name}: {point.z:.5f} at: {point.x}-{point.y}",
+        },
+        plotOptions: {
+          arcarea: {
+            dataLabels: {
+              verticalAlign: "top",
+              offsetY: 0.2,
+              autoRotation: true,
+            },
           },
         },
       },
-    });
+      "lefse",
+    );
     return chart;
   },
 } as Demo;

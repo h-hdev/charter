@@ -1,12 +1,21 @@
-import { ExportType, IChartOptions, Plot } from "./Charter";
+import { ExportType, Plot } from "./Charter";
 
 export default class HTMLCharter extends Plot {
   iframe: HTMLIFrameElement | undefined;
 
   src: string = "";
 
+  eventHandler(ev: any) {
+    if (ev.data.type === "ready") {
+      (this as any).__charter__.emit("ready", ev.data);
+    }
+  }
+
   beforeInit(): void {
-    this.iframe = document.createElement("iframe");
+    const iframe = (this.iframe = document.createElement("iframe"));
+    this.obj = {
+      iframe,
+    };
     this.iframe.style.width = "100%";
     this.iframe.style.height = "100%";
     this.iframe.style.border = "none";
@@ -14,8 +23,8 @@ export default class HTMLCharter extends Plot {
 
     this.src = this.templateOptions.src;
 
-    this.iframe.contentWindow?.addEventListener("message", (ev) => {
-      console.log(ev);
+    window.addEventListener("message", (ev) => {
+      this.eventHandler(ev);
     });
   }
 
@@ -34,34 +43,51 @@ export default class HTMLCharter extends Plot {
     const iframe = this.iframe;
     iframe.src = this.src;
     iframe.onload = () => {
-      iframe.contentWindow?.postMessage(
-        {
-          type: "render",
-          data: this.userOptions,
-        },
-        "*",
-      );
+      this.obj.adapter = (iframe.contentWindow as any)?.adapter;
+      if (!this.obj.adapter) {
+        throw new Error(`src page UnImplement HTML Chart adapter`);
+      }
+      this.obj.adapter.render(this.userOptions, this.templateOptions);
+      this.emit("ready", this.getVizOptions());
     };
   }
 
   setOptions(options: Record<string, any>): void {
-    if (!this.iframe) return;
-    this.iframe.contentWindow?.postMessage({
-      type: "setOptions",
-      data: options,
-    });
+    console.log(options, "update");
+    this.obj.adapter.update(options);
+    // this.obj.iframe?.contentWindow?.postMessage(
+    //   {
+    //     type: "setOptions",
+    //     data: options,
+    //   },
+    //   "*",
+    // );
   }
 
   getVizOptions() {
-    throw new Error("Method not implemented.");
+    if (!this.obj.adapter) return null;
+    //if (!this.iframe) return;
+    //
+    return this.obj.adapter.getVizOptions();
+    // (this.iframe.contentWindow as any)?.getVizOptions(this.templateOptions);
+    // throw new Error("Method not implemented.");
   }
 
-  setOption(key: string, value: any) {
-    console.log(key, value);
-  }
+  // setOption(key: string, value: any) {
+  //   super.setOption(key, value);
+  // }
 
-  export(type: ExportType, filename: string, options?: IChartOptions): void {
-    console.log(type, filename, options);
-    throw new Error("Method not implemented.");
+  // @ts-ignore
+  export(type: ExportType, filename: string): void {
+    // console.log(type, filename, options);
+    // throw new Error("Method not implemented.");
+    //
+    // this.obj.iframe?.contentWindow.postMessage(
+    //   {
+    //     type: "export",
+    //     data: { type, filename },
+    //   },
+    //   "*",
+    // );
   }
 }

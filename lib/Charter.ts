@@ -1,3 +1,5 @@
+import Utils from "@/utils/index.js";
+
 export interface IChartOptions {
   [key: string]: any;
 }
@@ -6,8 +8,25 @@ const ExportFileType = ["png", "jpg", "svg", "pdf"] as const;
 
 export type ExportType = (typeof ExportFileType)[number];
 
-export abstract class VizBase {
-  abstract render(): void;
+class EventBus {
+  _events: Record<string, Function[]> = {};
+  on(eventName: string, handler: Function) {
+    if (!this._events[eventName]) {
+      this._events[eventName] = [];
+    }
+    this._events[eventName].push(handler);
+  }
+
+  emit(eventName: string, args: any) {
+    if (!this._events[eventName]) return;
+    this._events[eventName].forEach((e) => {
+      e(args);
+    });
+  }
+}
+
+export abstract class VizBase extends EventBus {
+  abstract render(callback?: Function): void;
   abstract setOptions(options: Record<string, any>): void;
   abstract setOption(key: string, value: any): void;
   abstract getVizOptions(): any;
@@ -45,6 +64,14 @@ export abstract class Plot extends VizBase {
     this.render();
   }
 
+  setOption(key: string, value: any): void {
+    // @ts-ignore
+    key = key.replace(/\[(\d)\]/, (match, p1) => "." + p1);
+    let options = Utils.set({}, key, value);
+
+    this.setOptions({ ...options });
+  }
+
   abstract destory(): void;
 
   abstract beforeInit(): void;
@@ -61,7 +88,7 @@ export interface ITemplateOptions {
   [key: string]: any;
 }
 
-export class Charter implements VizBase {
+export class Charter extends EventBus implements VizBase {
   static #templates: Record<string, PlotCstor> = {};
 
   static register(template: string, cstor: PlotCstor) {
@@ -80,9 +107,10 @@ export class Charter implements VizBase {
 
   constructor(
     el: HTMLElement,
-    template: string | ITemplateOptions,
     options: IChartOptions,
+    template: string | ITemplateOptions,
   ) {
+    super();
     this._el = el;
     if (typeof template === "string") {
       this._templateId = template;
@@ -96,14 +124,23 @@ export class Charter implements VizBase {
 
     this.#init();
   }
-  render(): void {
-    this.#inst?.render();
+
+  // on(eventName: string, handler: Function) {
+
+  // }
+
+  render(callback?: Function): void {
+    this.#inst?.render(callback);
   }
   getVizOptions(): any[] {
     return this.#inst?.getVizOptions();
   }
   export(type: ExportType, filename: string, options?: IChartOptions): void {
     this.#inst?.export(type, filename, options);
+  }
+
+  exportChart(filename: string, type: ExportType) {
+    this.export(type, filename);
   }
 
   #init() {
@@ -117,6 +154,14 @@ export class Charter implements VizBase {
       this._options,
       this._templateOptions,
     );
+    (this.#inst as any).__charter__ = this;
+
+    // this.#inst.on = this.on;
+    // this.#inst.emit = this.emit;
+    //
+    this.#inst.on("ready", (data: any) => {
+      this.emit("ready", data);
+    });
   }
 
   destory() {

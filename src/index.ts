@@ -71,28 +71,53 @@ function createDemo(index: number, updateLocation?: boolean) {
   if (demo) {
     demo.destory();
   }
-  demo = demos[index].demo(chartContainer);
+  demo = (window as any).demo = demos[index].demo(chartContainer);
 
-  interactive = new (window as any).DatGui(
-    interactiveContainer,
-    demo.getVizOptions(),
-    (code: string, value: any, widget: any) => {
-      console.log(code, value);
-      demo.setOption(code, value);
-      // if (widget.options.group === 'export') {
-      // 	this.exportOptions[code] = value;
-      // 	return false;
+  let interactiveOptions = demo.getVizOptions();
+  if (interactiveOptions) {
+    interactive = new (window as any).DatGui(
+      interactiveContainer,
+      demo.getVizOptions(),
+      (code: string, value: any) => {
+        console.log(code, value);
+        demo.setOption(code, value);
+        // if (widget.options.group === 'export') {
+        // 	this.exportOptions[code] = value;
+        // 	return false;
+        // }
+        // if (code === 'position' || code === 'size') {
+        // 	this.chart.update(code, value);
+        // } else {
+        // 	let newOptions = Utils.set({}, code, value);
+        // 	this.chart.update(newOptions);
+        // }
+      },
+    );
+    console.log(interactive);
+  } else {
+    demo.on("ready", (data: any) => {
+      // if (ev.type === "ready") {
+      interactive = new (window as any).DatGui(
+        interactiveContainer,
+        data,
+        (code: string, value: any) => {
+          console.log(code, value);
+          demo.setOption(code, value);
+          // if (widget.options.group === 'export') {
+          // 	this.exportOptions[code] = value;
+          // 	return false;
+          // }
+          // if (code === 'position' || code === 'size') {
+          // 	this.chart.update(code, value);
+          // } else {
+          // 	let newOptions = Utils.set({}, code, value);
+          // 	this.chart.update(newOptions);
+          // }
+        },
+      );
       // }
-      // if (code === 'position' || code === 'size') {
-      // 	this.chart.update(code, value);
-      // } else {
-      // 	let newOptions = Utils.set({}, code, value);
-      // 	this.chart.update(newOptions);
-      // }
-    },
-  );
-
-  console.log(interactive);
+    });
+  }
 
   sampleData.innerHTML = JSON.stringify(
     demos[index].sampleData,
@@ -111,7 +136,11 @@ function createDemo(index: number, updateLocation?: boolean) {
   }
 }
 
-let t = window.location.search.replace("?t=", "");
+const qs = new URLSearchParams(window.location.search);
+
+let t = qs.get("t");
+
+(window as any).qs = qs;
 let index = 0;
 if (t) {
   for (let i = 0; i < demos.length; i++) {

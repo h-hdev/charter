@@ -15,8 +15,8 @@ import wrapper from "./wrapper/index.js";
 wrapper(Highcharts);
 import series from "./series/index.js";
 series(Highcharts);
-import Plugins from "./plugins/index.js";
-Plugins(Highcharts);
+// import Plugins from "./plugins/index.js";
+// Plugins(Highcharts);
 
 import Utils from "@/utils/index.js";
 import { getBasicOptions } from "./VizOptions.js";
@@ -76,6 +76,7 @@ export class Highcharter extends Plot {
   }
 
   setOption(key: string, value: any): void {
+    //@ts-ignore
     key = key.replace(/\[(\d)\]/, (match, p1) => "." + p1);
     let options = Utils.set({}, key, value);
 

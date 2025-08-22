@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+
+    <body>
+        <div id="container" style="width: 100%; height: 800px"></div>
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script>
+            /**
+             *  跨域资源存在以下限制：
+             *
+             * 1. 配置参数、可视化参数只能是纯 JSON，不能包含 JS 对象、函数（postMessage 只能传输 JSON）
+             */
+
+            const messageHandler = (ev) => {
+                switch (ev.data.type) {
+                    case "render":
+                        break;
+                    case "update":
+                        break;
+                }
+            };
+
+            window.addEventListener("load", () => {
+                window.addEventListener("message", (ev) => {});
+            });
+        </script>
+    </body>
+</html>

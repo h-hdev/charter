@@ -29,4 +29,6 @@ export default defineConfig({
       tsconfigPath: "./tsconfig.app.json",
     }),
   ],
+
+  publicDir: "./public",
 });

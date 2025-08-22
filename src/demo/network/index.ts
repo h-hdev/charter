@@ -15,29 +15,33 @@ export default {
     },
   },
   demo: (container: HTMLElement) => {
-    chart = new Chart(container, "network", {
-      title: {
-        text: "network",
-      },
-      plotOptions: {
-        networkgraph: {
-          dataLabels: {
-            enabled: true,
-            format: "{point.name}",
+    chart = new Chart(
+      container,
+      {
+        title: {
+          text: "network",
+        },
+        plotOptions: {
+          networkgraph: {
+            dataLabels: {
+              enabled: true,
+              format: "{point.name}",
+            },
+          },
+        },
+        network: {
+          nodes,
+          links,
+          layoutAlgorithm: {
+            enableSimulation: true,
+            initialPositions: "circle",
+            integration: "euler",
+            gravitationalConstant: 1,
           },
         },
       },
-      network: {
-        nodes,
-        links,
-        layoutAlgorithm: {
-          enableSimulation: true,
-          initialPositions: "circle",
-          integration: "euler",
-          gravitationalConstant: 1,
-        },
-      },
-    });
+      "network",
+    );
     return chart;
   },
 } as Demo;

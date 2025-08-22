@@ -375,8 +375,6 @@ k__Bacteria.p__Verrucomicrobiota.c__Verrucomicrobiae.o__Verrucomicrobiales.f__Ak
 
 // type InputLine = (string[] | number)[];
 
-let highlight = {};
-
 const data: string[][] = input.split("\n").map((line) => {
   return line.replace("			-", "").split("	");
 

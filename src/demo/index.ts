@@ -3,6 +3,7 @@ import lefse from "./lefse/index";
 import circos from "./circos/index";
 import network from "./network/index";
 import { Charter } from "@/Charter";
+import legacy from "./legacy";
 
 export type Demo = {
   name: string;
@@ -12,6 +13,6 @@ export type Demo = {
   sampleData: any;
 };
 
-const demos: Demo[] = [lefse, genus_tree, circos, network];
+const demos: Demo[] = [lefse, genus_tree, circos, network, legacy];
 
 export default demos;

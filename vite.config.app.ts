@@ -16,5 +16,6 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./lib"),
     },
   },
+  publicDir: "./public",
   // 其他应用特有配置...
 });

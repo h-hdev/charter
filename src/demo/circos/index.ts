@@ -32,9 +32,13 @@ export default {
   code: "circos",
   sampleData: series[0],
   demo: (container: HTMLElement) => {
-    let chart = new Chart(container, "circos", {
-      series: series,
-    });
+    let chart = new Chart(
+      container,
+      {
+        series: series,
+      },
+      "circos",
+    );
     return chart;
   },
 } as Demo;
