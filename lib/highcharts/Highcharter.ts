@@ -1,22 +1,22 @@
 import { ExportType, IChartOptions, Plot } from "../Charter";
 
 // Highcharts
-import * as Highcharts from "highcharts";
-import "highcharts/modules/treemap";
-import "highcharts/modules/treegraph";
-import "highcharts/modules/networkgraph";
-import "highcharts/highcharts-more";
-import "highcharts/modules/sankey";
-import "highcharts/modules/dependency-wheel";
-import "highcharts/modules/exporting";
+import Highcharts from "highcharts/esm/highcharts.js";
+import "highcharts/esm/modules/treemap";
+import "highcharts/esm/modules/treegraph";
+import "highcharts/esm/modules/networkgraph";
+import "highcharts/esm/highcharts-more";
+import "highcharts/esm/modules/sankey";
+import "highcharts/esm/modules/dependency-wheel";
+import "highcharts/esm/modules/exporting";
 
 // Highcharts wrapper and series
 import wrapper from "./wrapper/index.js";
 wrapper(Highcharts);
 import series from "./series/index.js";
 series(Highcharts);
-// import Plugins from "./plugins/index.js";
-// Plugins(Highcharts);
+import Plugins from "./plugins/index.js";
+Plugins(Highcharts);
 
 import Utils from "@/utils/index.js";
 import { getBasicOptions } from "./VizOptions.js";
@@ -55,7 +55,6 @@ export class Highcharter extends Plot {
       }
     });
 
-    console.log(options, "update");
     const keys = Object.keys(options);
     let keyLength = keys.length;
     if (keyLength) {

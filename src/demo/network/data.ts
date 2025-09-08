@@ -1,4 +1,6 @@
-const node = `name,group,score,module,type
+import csvParser from "@/utils/paseCSV";
+
+const node = `id,group,score,module,type
 g__Bifidobacterium;s__Bifidobacterium longum,Actinobacteria,4,1,A
 g__Eubacterium;s__Eubacterium sp. CAG:180,Firmicutes,5,1,A
 g__Prevotella;s__Prevotella copri,Bacteroidetes,11,1,A
@@ -88,7 +90,7 @@ g__Senegalimassilia;s__Senegalimassilia anaerobia,Actinobacteria,6,4,B
 g__Coprococcus;s__Coprococcus comes,Firmicutes,16,4,B
 g__Blautia;s__Blautia sp. KLE 1732,Firmicutes,25,4,B`;
 
-const group = `source,target,coefficient,weight,inter_type
+const link = `source,target,coefficient,value,inter_type
 g__Bifidobacterium;s__Bifidobacterium longum,g__Bifidobacterium;s__Bifidobacterium pseudocatenulatum,0.727731092,0.727731092,positive
 g__Bifidobacterium;s__Bifidobacterium longum,g__Bifidobacterium;s__Bifidobacterium dentium,0.603972498,0.603972498,positive
 g__Bifidobacterium;s__Bifidobacterium longum,g__Bifidobacterium;s__Bifidobacterium adolescentis,0.711229947,0.711229947,positive
@@ -493,43 +495,21 @@ g__Eubacterium;s__[Eubacterium] hallii,g__Coprococcus;s__Coprococcus comes,0.613
 g__Eubacterium;s__[Eubacterium] hallii,g__Blautia;s__Blautia sp. KLE 1732,0.808097785,0.808097785,positive
 g__Coprococcus;s__Coprococcus comes,g__Blautia;s__Blautia sp. KLE 1732,0.622612681,0.622612681,positive`;
 
-let groups: Record<
-  string,
-  {
-    name: string;
-    nodes: any[];
-  }
-> = {};
-
-type nodeGroupData = [string, string, number];
-
-node.split("\n").forEach((line, lineNo) => {
-  if (lineNo) {
-    let tmp = line.split(",").map((d, i) => {
-      return i === 2 ? parseFloat(d) : d;
-    }) as nodeGroupData;
-
-    let groupName = tmp[1];
-    if (!groups[groupName]) {
-      groups[groupName] = {
-        name: groupName,
-        nodes: [],
-      };
-    }
-
-    groups[groupName].nodes.push([tmp[0], tmp[2]]);
-  }
+const nodes = csvParser(node, {
+  // ignoreHeader: true,
+  parser: {
+    score: parseInt,
+    module: parseInt,
+  },
 });
 
-let links: [string, string, number][] = [];
+const links = csvParser(link, {
+  parser: {
+    coefficient: parseFloat,
+    weight: parseFloat,
+  },
 
-group.split("\n").forEach((line, lineNo) => {
-  if (lineNo) {
-    let tmp = line.split(",");
-    links.push([tmp[0], tmp[1], parseFloat(tmp[4])]);
-  }
+  // ignoreHeader: true,
 });
-
-const nodes = Object.keys(groups).map((key) => groups[key]);
 
 export { nodes, links };

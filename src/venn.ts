@@ -1,6 +1,6 @@
-import { Venn } from "@/index";
+import { Chart } from "@/index";
 
-const venn = new Venn(document.querySelector("#app") as HTMLElement, {
+const options = {
   title: {
     text: "venn5",
   },
@@ -144,4 +144,10 @@ const venn = new Venn(document.querySelector("#app") as HTMLElement, {
     },
   ],
   colors: ["#ffbf81", "#ffe093", "#8fc8ff", "#e6b4e4", "#a2e6c0"],
+};
+
+const venn = new Chart(document.querySelector("#app") as HTMLElement, options, {
+  id: "html",
+  src: "./legacy/index.html",
+  code: "venn",
 });

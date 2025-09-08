@@ -5,7 +5,8 @@ import HTMLCharter from "./HTMLCharter";
 import Lefse from "./highcharts/Lefse";
 import GenusTree from "./highcharts/GenusTree";
 import Circos from "./highcharts/Circos";
-import Network from "./highcharts/Network";
+import Network from "./canvas/Network";
+// import Network from "./highcharts/Network";
 // regist charts
 // Charter.register('line-basic', LineBasic);
 Charter.register("highcharts", Highcharter);

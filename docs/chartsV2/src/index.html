@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+		}
+
+		.js-chart-demo {
+			width: 100vw;
+			height: 100vh;
+			position: relative;
+
+		}
+
+		.js-options {
+			position: absolute;
+			left: 1em;
+			width: 850px;
+			display: flex;
+		}
+
+		.js-chart-wrapper {
+			width: calc(100vw - 900px);
+			height: 100%;
+			position: absolute;
+			left: 880px;
+			background-color: #f5f5f5;
+		}
+
+
+		.js-chart-container {
+			width: 600px;
+			height: 500px;
+			border: 1px solid #ddd;
+			position: absolute;
+			background-color: #fff;
+		}
+
+
+		.js-data-container {
+			width: 450px;
+		}
+
+		.js-options-container {
+			width: 400px;
+			padding-left: 1em;
+		}
+
+		.js-data-container select {
+			margin-top: 1em;
+			padding: 5px 10px;
+			min-width: 200px;
+			outline: none;
+		}
+
+		pre {
+			width: 100%;
+			background-color: #fcfcfc;
+			padding: 1em;
+			max-height: 700px;
+			overflow-y: auto;
+			font-family: Menlo, Monaco, Consolas, Courier New, monospace;
+		}
+
+		.js-export-container .js-widget-input {
+			margin-bottom: 1em;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="app"></div>
+	<script>
+		window.iconUrl = window.location.protocol + '://demo.jianshukeji.com/20210416';
+	</script>
+	<script src="https://demo.jianshukeji.com/20210416/dat-gui.js"></script>
+</body>
+
+</html>

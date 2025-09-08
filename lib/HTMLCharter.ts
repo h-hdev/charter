@@ -52,6 +52,14 @@ export default class HTMLCharter extends Plot {
     };
   }
 
+  setOption(key: string, value: any): void {
+    if (this.obj.adapter.setOption) {
+      this.obj.adapter.setOption(key, value);
+    } else {
+      super.setOption(key, value);
+    }
+  }
+
   setOptions(options: Record<string, any>): void {
     console.log(options, "update");
     this.obj.adapter.update(options);

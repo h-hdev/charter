@@ -38,13 +38,13 @@ export abstract class VizBase extends EventBus {
 }
 
 export abstract class Plot extends VizBase {
-  obj: any;
-  container: HTMLElement;
+  obj: any = {};
+  container: HTMLDivElement;
   userOptions: IChartOptions;
   options: IChartOptions;
   templateOptions: ITemplateOptions;
   constructor(
-    container: HTMLElement,
+    container: HTMLDivElement,
     options: IChartOptions,
     templateOptions: ITemplateOptions,
   ) {
