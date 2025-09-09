@@ -1,5 +1,6 @@
 import Utils from "@/utils";
 import Konva from "konva";
+import { Plot } from "@/Charter";
 
 export interface ITitleOptions {
   text: string | null;
@@ -55,13 +56,17 @@ export default class Title {
   // @ts-ignore
   options: ITitleOptions;
 
+  plot: Plot;
+
   constructor(
     options: Partial<ITitleOptions>,
     layer: Konva.Layer,
     containerSize: [number, number],
+    plot: Plot,
   ) {
     this.containerSize = containerSize;
     this.layer = layer;
+    this.plot = plot;
 
     this.setOptions(options);
 
@@ -155,6 +160,13 @@ export default class Title {
     if (!this.obj) {
       this.obj = new Konva.Text(textAttrs);
       this.layer.add(this.obj);
+
+      this.obj.on("dblclick", () => {
+        this.plot.emit("textEdit", {
+          key: "title",
+          text: this.options.text,
+        });
+      });
     } else {
       this.obj.setAttrs(textAttrs);
     }

@@ -1,4 +1,5 @@
 import Utils from "@/utils/index.js";
+import TextEditor from "./plugin/TextEditor";
 
 export interface IChartOptions {
   [key: string]: any;
@@ -39,17 +40,26 @@ export abstract class VizBase extends EventBus {
 
 export abstract class Plot extends VizBase {
   obj: any = {};
+  root: HTMLElement;
   container: HTMLDivElement;
   userOptions: IChartOptions;
   options: IChartOptions;
   templateOptions: ITemplateOptions;
+  textEditor: TextEditor | undefined;
   constructor(
     container: HTMLDivElement,
     options: IChartOptions,
     templateOptions: ITemplateOptions,
   ) {
     super();
-    this.container = container;
+
+    this.root = container;
+    this.container = document.createElement("div");
+    this.container.className = "js_plot_container";
+    this.container.style.position = "relative";
+    this.container.style.width = "100%";
+    this.container.style.height = "100%";
+    this.root.appendChild(this.container);
     this.userOptions = { ...options };
     this.options = this._getOptions();
     // this.options = { ...this.userOptions };
@@ -61,9 +71,26 @@ export abstract class Plot extends VizBase {
 
   init() {
     this.beforeInit();
+    this.on("textEdit", (args: Record<string, any>) => {
+      if (!this.textEditor) {
+        this.textEditor = new TextEditor(
+          this.container,
+          {},
+          (newText: string) => {
+            this.emit("textUpdatd", {
+              ...args,
+              newText,
+            });
+          },
+        );
+      }
+      this.textEditor.setText(args.text);
+    });
     this.render();
+    this.afterInit();
   }
 
+  afterInit() {}
   setOption(key: string, value: any): void {
     // @ts-ignore
     key = key.replace(/\[(\d)\]/, (match, p1) => "." + p1);

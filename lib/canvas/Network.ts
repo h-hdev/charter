@@ -94,14 +94,27 @@ export default class Network extends Plot {
     return r;
   }
 
-  override init(): void {
-    this.beforeInit();
-    this.renderBasic();
-    // this.render();
+  afterInit(): void {
+    this.on("textUpdatd", (data: Record<string, any>) => {
+      if (data.key === "title") {
+        this.obj.title.update({
+          text: data.newText,
+        });
+      }
+    });
   }
 
+  // override init(): void {
+  //   this.beforeInit();
+  //   this.renderBasic();
+  //   // this.render();
+  // }
+
   // @ts-ignore
-  render(callback?: Function): void {}
+  render(callback?: Function): void {
+    this.renderBasic();
+    // this._render();
+  }
 
   setOption(key: string, value: any): void {
     Utils.set(this.options, key, value);
@@ -212,6 +225,16 @@ export default class Network extends Plot {
               value: 20,
             },
           },
+          {
+            name: "气泡透明度",
+            key: "network.node.fillOpacity",
+            type: "number",
+            options: {
+              min: 0,
+              max: 1,
+              step: 0.1,
+            },
+          },
 
           {
             name: "线条颜色",
@@ -298,7 +321,12 @@ export default class Network extends Plot {
 
     console.log(this.options.title, titleOptions);
 
-    this.obj.title = new Title(titleOptions, this.obj.mainLayer, this.obj.size);
+    this.obj.title = new Title(
+      titleOptions,
+      this.obj.mainLayer,
+      this.obj.size,
+      this,
+    );
 
     this.options.legend.items = this._getLegendItems();
 
@@ -356,20 +384,24 @@ export default class Network extends Plot {
 
   drawNode(node: any) {
     const radius = this.obj.radiusScale(node.value);
+    console.log(this.options.network.node.fillOpacity);
+    const nodeAttr = {
+      radius,
+      x: node.x,
+      y: node.y,
+      fill: this.obj.color(node.group),
+      opacity: this.options.network.node.fillOpacity,
+    };
     if (!node.graph) {
-      node.graph = new Konva.Circle({
-        radius,
-        x: node.x,
-        y: node.y,
-        fill: this.obj.color(node.group),
-      });
+      node.graph = new Konva.Circle(nodeAttr);
       this.obj.mainLayer.add(node.graph);
     } else {
+      node.graph.setAttrs(nodeAttr);
       // node.Group
-      node.graph.setAttr("x", node.x);
-      node.graph.setAttr("y", node.y);
-      node.graph.setAttr("fill", this.obj.color(node.group));
-      node.graph.setAttr("radius", radius);
+      // node.graph.setAttr("x", node.x);
+      // node.graph.setAttr("y", node.y);
+      // node.graph.setAttr("fill", this.obj.color(node.group));
+      // node.graph.setAttr("radius", radius);
     }
   }
 
