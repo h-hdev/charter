@@ -22,6 +22,8 @@ export interface INetworkOptions {
     lineWidth: number;
     lineColor: string;
     maxLength: number;
+    minSize: number;
+    maxSize: number;
     dataMapping: Record<string, string>;
   };
   legend?: any;
@@ -56,6 +58,8 @@ const defaultOptions: INetworkOptions = {
   link: {
     lineWidth: 1,
     lineColor: "#ddd",
+    minSize: 1,
+    maxSize: 3,
     maxLength: 20,
     dataMapping: {
       id: "id",
@@ -244,11 +248,28 @@ export default class Network extends Plot {
               value: "#999",
             },
           },
+
           {
-            name: "线条大小",
-            key: "network.link.lineWidth",
+            name: "线条最小宽度",
+            key: "network.link.minSize",
             type: "number",
+            options: {
+              // value: "#999",
+            },
           },
+          {
+            name: "线条最大宽度",
+            key: "network.link.maxSize",
+            type: "number",
+            options: {
+              // value: "#999",
+            },
+          },
+          // {
+          //   name: "线条大小",
+          //   key: "network.link.lineWidth",
+          //   type: "number",
+          // },
         ],
       },
       {
@@ -361,24 +382,16 @@ export default class Network extends Plot {
   }
 
   drawLink(link: any) {
+    const linkAttrs = {
+      points: [link.source.x, link.source.y, link.target.x, link.target.y],
+      stroke: this.options.network.link.lineColor,
+      strokeWidth: this.obj.linkWidthScale(link.value),
+    };
     if (!link.graph) {
-      link.graph = new Konva.Line({
-        points: [link.source.x, link.source.y, link.target.x, link.target.y],
-        stroke: this.options.network.link.lineColor,
-        strokeWidth: this.options.network.link.lineWidth,
-        lineCap: "round",
-        lineJoin: "round",
-      });
+      link.graph = new Konva.Line(linkAttrs);
       this.obj.mainLayer.add(link.graph);
     } else {
-      link.graph.points([
-        link.source.x,
-        link.source.y,
-        link.target.x,
-        link.target.y,
-      ]);
-      link.graph.stroke(this.options.network.link.lineColor);
-      link.graph.strokeWidth(this.options.network.link.lineWidth);
+      link.graph.setAttrs(linkAttrs);
     }
   }
 
@@ -397,11 +410,6 @@ export default class Network extends Plot {
       this.obj.mainLayer.add(node.graph);
     } else {
       node.graph.setAttrs(nodeAttr);
-      // node.Group
-      // node.graph.setAttr("x", node.x);
-      // node.graph.setAttr("y", node.y);
-      // node.graph.setAttr("fill", this.obj.color(node.group));
-      // node.graph.setAttr("radius", radius);
     }
   }
 
@@ -485,6 +493,16 @@ export default class Network extends Plot {
           return scoreExtent[0] === scoreExtent[1]
             ? () => 10
             : d3.scaleLinear().domain(scoreExtent).range(values);
+        },
+      },
+      linkWidthScale: {
+        keys: ["network.link.minSize", "network.link.maxSize"],
+        // @ts-ignore
+        createOrUpdate: function (values: any[], isUpdate?: boolean) {
+          const linkWidth: any = d3.extent(this.obj.links, (d: any) => d.value);
+          return linkWidth[0] === linkWidth[1]
+            ? () => 1
+            : d3.scaleLinear().domain(linkWidth).range(values);
         },
       },
     };

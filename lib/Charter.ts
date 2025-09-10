@@ -98,7 +98,9 @@ export abstract class Plot extends VizBase {
 
     this.setOptions({ ...options });
   }
-
+  getObject(key: string): any {
+    return this.obj[key];
+  }
   abstract destory(): void;
 
   abstract beforeInit(): void;
@@ -168,6 +170,10 @@ export class Charter extends EventBus implements VizBase {
 
   exportChart(filename: string, type: ExportType) {
     this.export(type, filename);
+  }
+
+  getObject(key: string) {
+    return this.#inst?.getObject(key);
   }
 
   #init() {

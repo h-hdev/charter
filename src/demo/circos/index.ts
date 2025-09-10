@@ -39,6 +39,9 @@ export default {
       },
       "circos",
     );
+
+    console.log(chart.getObject("chart"));
+
     return chart;
   },
 } as Demo;

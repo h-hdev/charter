@@ -1,4 +1,3 @@
-import { min } from "d3";
 import Konva from "konva";
 
 export interface ILegendOptions {
@@ -48,9 +47,6 @@ export default class Legend {
     this.layer = layer;
     this.canvasSize = canvasSize;
     this.options = options;
-    // const { items } = this.setOptions(options);
-
-    // this.items = items;
 
     this.render();
   }
