@@ -1,5 +1,5 @@
 import Konva from "konva";
-
+import KnovaUtils from "@/utils/Knova";
 export interface ILegendOptions {
   items: ILegendItemOptions[];
   layout: "horizontal" | "vertical";
@@ -153,12 +153,16 @@ export default class Legend {
   }
 
   render() {
+    const layer = this.layer;
     this.group = new Konva.Group({
       x: 0,
       y: 0,
       id: "legend",
       draggable: true,
       zIndex: 20,
+      dragBoundFunc: function (this: any, pos: any) {
+        return KnovaUtils.dragLimitInLayer(this, layer, pos);
+      },
     });
 
     this.layer.add(this.group);

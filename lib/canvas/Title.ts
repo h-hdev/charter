@@ -1,6 +1,7 @@
 import Utils from "@/utils";
 import Konva from "konva";
 import { Plot } from "@/Charter";
+import KnovaUtils from "@/utils/Knova";
 
 export interface ITitleOptions {
   text: string | null;
@@ -147,6 +148,8 @@ export default class Title {
       return;
     }
 
+    const layer = this.layer;
+
     const textAttrs = {
       x: this.bbox.x,
       y: this.bbox.y,
@@ -155,6 +158,9 @@ export default class Title {
       fontFamily: this.style.fontFamily,
       fill: this.style.color,
       draggable: true,
+      dragBoundFunc: function (this: any, pos: any) {
+        return KnovaUtils.dragLimitInLayer(this, layer, pos);
+      },
     };
 
     if (!this.obj) {
@@ -167,6 +173,9 @@ export default class Title {
           text: this.options.text,
         });
       });
+
+      // this.obj.on("dragstart", () => {});
+      // this.obj.on("dragmove", () => {});
     } else {
       this.obj.setAttrs(textAttrs);
     }

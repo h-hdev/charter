@@ -27,6 +27,15 @@ export interface INetworkOptions {
     dataMapping: Record<string, string>;
   };
   legend?: any;
+  dataLabels: {
+    enabled: boolean;
+    style: {
+      fontSize: string;
+      color: string;
+      fontFamily: string;
+      fontWeight: string;
+    };
+  };
 }
 
 interface Node {
@@ -65,6 +74,15 @@ const defaultOptions: INetworkOptions = {
       id: "id",
     },
   },
+  dataLabels: {
+    enabled: false,
+    style: {
+      fontSize: "10px",
+      color: "#000",
+      fontFamily: "",
+      fontWeight: "normal",
+    },
+  },
 };
 
 // Simple merge target to source
@@ -94,7 +112,6 @@ export default class Network extends Plot {
       this.userOptions,
     );
 
-    console.log(r);
     return r;
   }
 
@@ -265,6 +282,16 @@ export default class Network extends Plot {
               // value: "#999",
             },
           },
+          {
+            name: "数据标签开关",
+            key: "network.dataLabels.enabled",
+            type: "checkbox",
+          },
+          {
+            name: "数据标签样式",
+            key: "network.dataLabels.style",
+            type: "font",
+          },
           // {
           //   name: "线条大小",
           //   key: "network.link.lineWidth",
@@ -340,8 +367,6 @@ export default class Network extends Plot {
       this.options.title,
     );
 
-    console.log(this.options.title, titleOptions);
-
     this.obj.title = new Title(
       titleOptions,
       this.obj.mainLayer,
@@ -397,12 +422,12 @@ export default class Network extends Plot {
 
   drawNode(node: any) {
     const radius = this.obj.radiusScale(node.value);
-    console.log(this.options.network.node.fillOpacity);
+    const color = this.obj.color(node.group);
     const nodeAttr = {
       radius,
       x: node.x,
       y: node.y,
-      fill: this.obj.color(node.group),
+      fill: color,
       opacity: this.options.network.node.fillOpacity,
     };
     if (!node.graph) {
@@ -411,6 +436,38 @@ export default class Network extends Plot {
     } else {
       node.graph.setAttrs(nodeAttr);
     }
+
+    if (
+      this.options.network.dataLabels !== undefined &&
+      this.options.network.dataLabels.enabled === false
+    ) {
+      if (node.dataLabel) {
+        node.dataLabel.destroy();
+        node.dataLabel = null;
+      }
+
+      return false;
+    }
+
+    const dataLabelsConfig = {
+      text: node.name,
+      x: node.x,
+      y: node.y - radius * 2,
+      fontSize: parseInt(this.options.network.dataLabels.style.fontSize),
+      fill: this.options.network.dataLabels.style.color || "#000",
+      fontStyle: this.options.network.dataLabels.style.fontWeight || "normal",
+    };
+    if (node.dataLabel) {
+      node.dataLabel.setAttrs(dataLabelsConfig);
+    } else {
+      node.dataLabel = new Konva.Text(dataLabelsConfig);
+      this.obj.mainLayer.add(node.dataLabel);
+    }
+
+    node.dataLabel.setAttr(
+      "x",
+      dataLabelsConfig.x - node.dataLabel.width() / 2,
+    );
   }
 
   _toNode(node: any): Node {
@@ -577,6 +634,9 @@ export default class Network extends Plot {
       // )
       .on("tick", () => {
         this._render();
+      })
+      .on("end", () => {
+        this._renderDataLabels();
       });
 
     this.obj.oom = objectOptionsMapping;

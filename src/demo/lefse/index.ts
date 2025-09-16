@@ -6,20 +6,6 @@ import { ILefseOption } from "@/types/lefse";
 const lefseOptions: ILefseOption = {
   groups: nodeGroups,
   groupPadding: 5,
-  // highlight: {
-  //   "__DEFAULT-COLOR__": "red",
-  //   p__Firmicutes: "red",
-  //   c__Clostridia: "green",
-  //   p__Actinobacteriota: {
-  //     node: "blue",
-  //     color: "rgba(0, 255, 0, 0.8)",
-  //     name: "b:p__Actinobacteriota",
-  //   },
-  //   o__Lachnospirales: {
-  //     color: "rgba(0, 0, 255, 0.7)",
-  //     name: "b:o__Lachnospirales",
-  //   },
-  // },
 };
 
 export default {
@@ -37,7 +23,7 @@ export default {
         },
         lefse: lefseOptions,
         legend: {
-          layout: "vertical",
+          layout: "horizontal",
           align: "left",
           verticalAlign: "top",
           floating: true,
