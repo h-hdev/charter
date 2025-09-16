@@ -634,9 +634,6 @@ export default class Network extends Plot {
       // )
       .on("tick", () => {
         this._render();
-      })
-      .on("end", () => {
-        this._renderDataLabels();
       });
 
     this.obj.oom = objectOptionsMapping;
