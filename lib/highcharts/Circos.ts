@@ -17,12 +17,14 @@ export default class Circos extends Highcharter {
        */
       this.obj.chart.series[0].nodes.forEach((node: any) => {
         node.color = colors[node.colorIndex];
-
-        console.log(node);
-        // node.update({
-        //   color: colors[node.colorIndex],
-        // }, false);
       });
+
+      this.obj.chart.series[0].update();
+
+      // this.obj.chart.series[0].drawPoints(this.obj.chart.series[0].points);
+
+      // this.chart?.redraw();
+      return;
     }
 
     // else if (key === "series[0].dataLabels.enabled") {

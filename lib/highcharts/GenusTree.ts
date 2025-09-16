@@ -306,7 +306,7 @@ export default class GenusTree extends Highcharter {
           }),
         ),
       ) +
-      acrAreaDataLabelPadding * 2; // textPandding
+      acrAreaDataLabelPadding * 3; // textPandding
 
     pane.main.options.sizeOffset = -maxDataLabelLength;
     pane.column.options.innerSizeOffset = maxDataLabelLength;
@@ -365,7 +365,7 @@ export default class GenusTree extends Highcharter {
           dataLabels: {
             enabled: false,
             // offsetY: 0.5,
-            y: acrAreaDataLabelPadding,
+            offsetY: 0.3, //acrAreaDataLabelPadding,
             style: {
               fontWeight: "normal",
               fontSize: "12px",
