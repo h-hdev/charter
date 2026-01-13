@@ -26,9 +26,7 @@ export class Highcharter extends Plot {
 
   defaultOptions: IChartOptions = {};
 
-  beforeInit(): void {
-    console.log("highcharter");
-  }
+  beforeInit(): void {}
 
   destory(): void {
     if (this.chart) {
@@ -83,7 +81,6 @@ export class Highcharter extends Plot {
   }
 
   render(): void {
-    console.log(this.options);
     this.obj = {
       chart: Highcharts.chart(this.container, this.options),
     };

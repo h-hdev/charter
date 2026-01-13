@@ -1,0 +1,53 @@
+{
+  "name": "charts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "maintainers": [
+    "john@jianshukeji.com",
+    "peng.zhang@jianshukeji.com"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "test": "vite"
+  },
+  "dependencies": {
+    "highcharts": "10.3.2",
+    "chroma-js": "^2.1.1",
+    "lodash.get": "^4.4.2"
+  },
+  "devDependencies": {
+    "vite": "^6.3.1"
+  },
+  "repository": {
+    "type": "git"
+  },
+  "eslintConfig": {
+    "root": true,
+    "parserOptions": {
+      "ecmaVersion": 2017
+    },
+    "plugins": [
+      "html"
+    ],
+    "env": {
+      "browser": true
+    },
+    "globals": {
+      "applicationCache": false,
+      "atob": false,
+      "btoa": false,
+      "console": false,
+      "document": false,
+      "location": false,
+      "window": false
+    },
+    "parser": "babel-eslint"
+  },
+  "eslintIgnore": [
+    "node_modules",
+    "webpack.config.js"
+  ],
+  "author": "",
+  "license": "ISC"
+}

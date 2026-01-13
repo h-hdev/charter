@@ -7,6 +7,7 @@ import Konva from "konva";
 import Legend from "./legend";
 import Title from "./Title";
 import KnovaUtils from "@/utils/Knova";
+import Tooltip from "./Tooltip";
 
 export interface INetworkOptions {
   // colors: string[];
@@ -102,9 +103,16 @@ function merge(source: Record<string, any>, target: Record<string, any>) {
 
 export default class Network extends Plot {
   _getOptions(): IChartOptions {
+    const hcOptions = Highcharts.getOptions();
+    const title = {
+      ...hcOptions.title,
+    };
+    (title.style as any).fontSize = "20px";
+
     let r = merge(
       {
-        legend: Highcharts.getOptions().legend,
+        legend: hcOptions.legend,
+        title,
         network: {
           ...defaultOptions,
         },
@@ -152,7 +160,7 @@ export default class Network extends Plot {
         return this._toLink(link);
       });
 
-      this.obj.legend.update(this._getLegendItems());
+      this.obj.legend.setItems(this._getLegendItems());
 
       this.obj.simulation.nodes(this.obj.nodes);
       this.obj.simulation.force("link").links(this.obj.links);
@@ -163,6 +171,27 @@ export default class Network extends Plot {
 
     if (key.startsWith("title.")) {
       this.obj.title.update(this.options.title);
+      return;
+    }
+
+    if (key.startsWith("legend.")) {
+      this.obj.legend.update(this.options.legend);
+      return;
+    }
+
+    if (key.startsWith("chart.")) {
+      if (key.startsWith("chart.plot")) {
+        this.obj.background.setAttrs({
+          stroke: this.options.chart.plotBorderColor || "#fff",
+          strokeWidth: this.options.chart.plotBorderWidth || 0,
+          cornerRadius: this.options.chart.plotBorderRadius || undefined,
+          fill: this.options.chart.plotBackgroundColor || "#fff",
+        });
+
+        return;
+      }
+
+      this._reflow();
       return;
     }
 
@@ -178,7 +207,7 @@ export default class Network extends Plot {
     });
 
     if (key === "colors") {
-      this.obj.legend.update(this._getLegendItems());
+      this.obj.legend.setItems(this._getLegendItems());
     }
 
     let redraw = true;
@@ -191,6 +220,32 @@ export default class Network extends Plot {
   // @ts-ignore
   setOptions(options: Record<string, any>): void {}
 
+  _reflow() {
+    this._calcSize();
+
+    const size = {
+      width: this.obj.size[0],
+      height: this.obj.size[1],
+    };
+
+    // update size
+    this.obj.stage.setAttrs(size);
+    this.obj.mainLayer.setAttrs(size);
+
+    // update components
+    this.obj.title.reflow(this.obj.size);
+    this.obj.legend.reflow();
+
+    // update
+    this.obj.background.setAttrs(size);
+
+    this.obj.simulation.force(
+      "center",
+      d3.forceCenter(this.obj.size[0] / 2, this.obj.size[1] / 2),
+    );
+
+    this.obj.simulation.alpha(1).restart();
+  }
   getVizOptions() {
     let keys: any[] = [];
     this.userOptions.network.nodes.headers.forEach((h: string) => {
@@ -342,6 +397,10 @@ export default class Network extends Plot {
     KnovaUtils.export(type, filename, this.obj.stage, this.obj.mainLayer);
   }
 
+  getSVG() {
+    return KnovaUtils.toSVG(this.obj.stage, this.obj.mainLayer);
+  }
+
   _getLegendItems() {
     let _nodeGroupMap: Record<string, boolean> = {};
     const result: { name: string; color: string }[] = [];
@@ -360,6 +419,19 @@ export default class Network extends Plot {
   }
 
   renderBasic() {
+    const size = [this.obj.mainLayer.width(), this.obj.mainLayer.height()];
+    this.obj.background = new Konva.Rect({
+      x: 0,
+      y: 0,
+      width: size[0],
+      height: size[1],
+      stroke: this.options.chart.plotBorderColor || "#fff",
+      strokeWidth: this.options.chart.plotBorderWidth || 0,
+      cornerRadius: this.options.chart.plotBorderRadius || undefined,
+      fill: this.options.chart.plotBackgroundColor || "#fff",
+    });
+    this.obj.mainLayer.add(this.obj.background);
+
     if (this.obj.title) return;
 
     const titleOptions: any = merge(
@@ -396,6 +468,11 @@ export default class Network extends Plot {
     this.obj.nodes.forEach((node) => {
       if (node.graph) {
         node.graph.destroy();
+        if (node.dataLabel) {
+          node.dataLabel.destroy();
+          node.dataLabel = null;
+        }
+        node._data = null;
       }
     });
     // @ts-ignore
@@ -436,6 +513,8 @@ export default class Network extends Plot {
     } else {
       node.graph.setAttrs(nodeAttr);
     }
+
+    node.graph._data = node;
 
     if (
       this.options.network.dataLabels !== undefined &&
@@ -497,6 +576,25 @@ export default class Network extends Plot {
       throw new Error(``);
     }
     return ld;
+  }
+
+  _calcSize() {
+    const margin = this.options.chart.margin
+      ? typeof this.options.chart.margin === "number"
+        ? new Array(4).fill(this.options.chart.margin)
+        : this.options.chart.margin
+      : [
+          this.options.chart.marginTop || 20,
+          this.options.chart.marginRight || 20,
+          this.options.chart.marginBotttom || 20,
+          this.options.chart.marginLeft || 20,
+        ];
+
+    this.obj.size = [
+      this.options.chart.width || this.container.clientWidth,
+      this.options.chart.height || this.container.clientHeight,
+      ...margin,
+    ];
   }
 
   beforeInit(): void {
@@ -579,10 +677,7 @@ export default class Network extends Plot {
 
     this.obj.dpi = window.devicePixelRatio;
 
-    const size = (this.obj.size = networkOptions.size || [
-      this.container.clientWidth,
-      this.container.clientHeight,
-    ]);
+    this._calcSize();
 
     this.obj.linkDistance = Math.max(
       networkOptions.link.maxLength,
@@ -599,6 +694,8 @@ export default class Network extends Plot {
       width: this.obj.size[0],
       height: this.obj.size[1],
     });
+
+    this.obj.tooltip = new Tooltip(this.container, {});
 
     this.obj.staticLayer = new Konva.Layer({
       listening: false,
@@ -625,7 +722,10 @@ export default class Network extends Plot {
         "collide",
         d3.forceCollide().radius((d: any) => this.obj.radiusScale(d.value) + 2),
       )
-      .force("center", d3.forceCenter(size[0] / 2, size[1] / 2))
+      .force(
+        "center",
+        d3.forceCenter(this.obj.size[0] / 2, this.obj.size[1] / 2),
+      )
       .force("x", d3.forceX(0).strength(0.02))
       .force("y", d3.forceY(0).strength(0.02))
       // .force(
@@ -679,6 +779,37 @@ export default class Network extends Plot {
         .on("drag", dragged)
         .on("end", dragended),
     );
+
+    const stage = this.obj.stage;
+    const _this = this;
+    this.obj.stage.on("mouseover mousemove dragmove", function (evt: any) {
+      if (_this.options.tooltip && _this.options.tooltip.enabled === false)
+        return;
+      const node = evt.target;
+      if (node && node !== stage && node._data) {
+        const mousePos = node.getStage().getPointerPosition();
+        const content = _this.options.tooltip.formatter
+          ? _this.options.tooltip.formatter.call(_this, node._data)
+          : `<b>${node._data.name}</b>`;
+        _this.obj.tooltip.update(mousePos, content);
+      } else {
+        _this.obj.tooltip.hide();
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      this.reflow();
+    });
+  }
+
+  reflow() {
+    if (this.options.chart.width && this.options.chart.height) return;
+    if (this.obj._reflowTimer) {
+      clearTimeout(this.obj._reflowTimer);
+    }
+    this.obj._reflowTimer = setTimeout(() => {
+      this._reflow();
+    }, 500);
   }
 
   destory(): void {

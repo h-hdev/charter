@@ -1,4 +1,4 @@
-import Renderer from "./renderer";
+import Renderer from "./Renderer";
 
 export default class Canvas extends Renderer {
   init() {

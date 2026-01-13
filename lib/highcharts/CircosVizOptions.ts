@@ -57,12 +57,53 @@ export default function (this: Circos) {
             },
           },
         },
+      ],
+    },
+    {
+      name: "刻度",
+      code: "tick",
+      items: [
         {
           key: "series[0].tick.enabled",
           type: "checkbox",
           name: "是否展示刻度",
           options: {
             value: true,
+          },
+        },
+        {
+          key: "series[0].tick.style",
+          type: "font",
+          name: "刻度样式",
+          options: {
+            value: {
+              fontSize: "8px",
+              color: "#555",
+            },
+          },
+        },
+        {
+          key: "series[0].tick.tickLength",
+          type: "number",
+          name: "刻度长度",
+          options: {
+            value: 5,
+          },
+        },
+        {
+          key: "series[0].tick.tickWidth",
+          name: "刻度宽度",
+          type: "number",
+          options: {
+            value: 1,
+          },
+        },
+        {
+          key: "series[0].tick.tickColor",
+          name: "刻度颜色",
+          type: "color",
+          options: {
+            value: "#555",
           },
         },
       ],

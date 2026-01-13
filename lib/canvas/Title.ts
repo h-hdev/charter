@@ -16,6 +16,7 @@ export interface ITitleOptions {
     fontWeight: string;
     textBaseline: string;
     textAlign: string;
+    fontStyle?: string;
   };
 }
 
@@ -46,11 +47,12 @@ export default class Title {
     fontFamily: string;
     textBaseLine: string;
     textAlign: string;
+    fontStyle?: string;
   };
   // text: string | null;
   // @ts-ignore
   bbox: { x: number; y: number; width: number; height: number };
-  containerSize: [number, number];
+  containerSize: number[];
 
   obj: Konva.Text | undefined;
 
@@ -62,7 +64,7 @@ export default class Title {
   constructor(
     options: Partial<ITitleOptions>,
     layer: Konva.Layer,
-    containerSize: [number, number],
+    containerSize: number[],
     plot: Plot,
   ) {
     this.containerSize = containerSize;
@@ -83,9 +85,7 @@ export default class Title {
     this.render();
   }
 
-  setOptions(options: Partial<ITitleOptions>) {
-    this.options = Utils.merge(this.options || defaultOptions, options);
-
+  _calcPosition() {
     let textAlign: any = "center",
       x: number = this.containerSize[0] / 2,
       textBaseLine: any = "top",
@@ -113,6 +113,17 @@ export default class Title {
       }
     }
 
+    x += this.options.x || 0;
+    y += (this.options.y || 0) + this.containerSize[3];
+
+    return { x, y, textAlign, textBaseLine };
+  }
+
+  setOptions(options: Partial<ITitleOptions>) {
+    this.options = Utils.merge(this.options || defaultOptions, options);
+
+    const { x, y, textAlign, textBaseLine } = this._calcPosition();
+
     this.style = {
       color: this.options.style.color || "#000",
       fontWeight: this.options.style.fontWeight || "normal",
@@ -122,11 +133,12 @@ export default class Title {
         `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif`,
       textAlign,
       textBaseLine,
+      fontStyle: this.options.style.fontStyle || undefined,
     };
 
     this.bbox = {
       x: x + (this.options.x || 0),
-      y: y + (this.options.y || 0),
+      y: y + (this.options.y || 0) + this.containerSize[3],
       width: 0,
       height: 0,
     };
@@ -137,6 +149,15 @@ export default class Title {
   update(options: Partial<ITitleOptions>) {
     this.setOptions(options);
     this.render();
+  }
+
+  reflow(containerSize: number[]) {
+    this.containerSize = containerSize;
+    const pos = this._calcPosition();
+    this.obj?.setAttrs({
+      x: pos.x,
+      y: pos.y,
+    });
   }
 
   render() {
@@ -150,7 +171,7 @@ export default class Title {
 
     const layer = this.layer;
 
-    const textAttrs = {
+    const textAttrs: Record<string, any> = {
       x: this.bbox.x,
       y: this.bbox.y,
       text: this.options.text,
@@ -162,6 +183,10 @@ export default class Title {
         return KnovaUtils.dragLimitInLayer(this, layer, pos);
       },
     };
+
+    textAttrs.fontStyle =
+      (this.style.fontStyle ? this.style.fontStyle + " " : "") +
+      this.style.fontWeight;
 
     if (!this.obj) {
       this.obj = new Konva.Text(textAttrs);

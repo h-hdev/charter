@@ -10,7 +10,7 @@
   ],
   "compilerOptions": {
     "baseUrl": "./",
-    "noUnusedLocals": false,
+    // "noUnusedLocals": false,
     "paths": {
       "@/*": ["./lib/*"]
     }

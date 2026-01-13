@@ -1,4 +1,4 @@
-import Renderer from "./renderer";
+import Renderer from "./Renderer";
 
 export default class SVG extends Renderer {
   _NS = "http://www.w3.org/2000/svg";

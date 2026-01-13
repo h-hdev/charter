@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+    <head> </head>
+    <body>
+        <div id="container" style="width: 800px; height: 800px"></div>
+    </body>
+    <script src="https://code.highcharts.com/maps/highmaps.js"></script>
+    <script>
+        window.adap = function ($) {
+            return {
+                render: options,
+            };
+        };
+
+        async function loadMapdata(mapdata) {
+            return fetch(mapdata).then((response) => response.json());
+        }
+
+        const container = document.querySelector("#container");
+        let map;
+        window.adapter = {
+            render: (options, template) => {
+                if (options.mapdata) {
+                    loadMapdata(options.mapdata).then((mapdata) => {
+                        if (!options.chart) {
+                            options.chart = {};
+                        }
+                        options.chart.map = mapdata;
+                        if (!map) {
+                            map = Highcharts.mapChart(container, options);
+                        } else {
+                            map.update(options);
+                        }
+                    });
+                }
+            },
+
+            getVizOptions() {
+                return [
+                    {
+                        name: "地图数据",
+                        items: [
+                            {
+                                name: "地址",
+                                type: "text",
+                            },
+                        ],
+                    },
+                ];
+                // return getVizOptions(currentTemplate, chart.chart.options);
+            },
+
+            exportChart: (filename, type) => {},
+
+            update: (key, value, isDefault) => {},
+        };
+    </script>
+</html>

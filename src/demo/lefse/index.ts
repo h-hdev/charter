@@ -6,6 +6,9 @@ import { ILefseOption } from "@/types/lefse";
 const lefseOptions: ILefseOption = {
   groups: nodeGroups,
   groupPadding: 5,
+  legend: {
+    enabled: false,
+  },
 };
 
 export default {
@@ -23,6 +26,7 @@ export default {
         },
         lefse: lefseOptions,
         legend: {
+          enabled: false,
           layout: "horizontal",
           align: "left",
           verticalAlign: "top",

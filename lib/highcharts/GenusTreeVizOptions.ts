@@ -2,7 +2,6 @@ import GenusTree from "./GenusTree";
 import { getBasicOptions } from "./VizOptions";
 export default function (this: GenusTree) {
   const options = (this.obj.chart as any).options;
-  console.log(options);
   return [
     getBasicOptions(options),
     {
@@ -32,6 +31,16 @@ export default function (this: GenusTree) {
           type: "font",
           options: {
             value: this.options.plotOptions.arcarea.dataLabels.style,
+          },
+        },
+        {
+          key: "genus.size",
+          type: "number",
+          name: "树形区域大小占比",
+          options: {
+            value: 65,
+            min: 20,
+            max: 80,
           },
         },
       ],

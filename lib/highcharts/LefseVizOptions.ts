@@ -19,6 +19,14 @@ export default function (this: Lefse) {
           },
         },
         {
+          key: "plotOptions.arctree.color",
+          type: "color",
+          name: "线条颜色",
+          options: {
+            value: "#000",
+          },
+        },
+        {
           key: "plotOptions.arcbubble.minSize",
           type: "number",
           name: "气泡最小大小",
@@ -135,7 +143,7 @@ export default function (this: Lefse) {
                 value: "vertical",
               },
             ],
-            value: 1,
+            value: 0,
           },
         },
         {
@@ -183,16 +191,16 @@ export default function (this: Lefse) {
           },
         },
         {
-          key: "legends[0].itemStyle",
+          key: "legends[1].itemStyle",
           name: "图例2：文字样式",
           type: "font",
           options: {
             value:
-              this.options.legends[0].itemStyle || options.legend.itemStyle,
+              this.options.legends[1].itemStyle || options.legend.itemStyle,
           },
         },
         {
-          key: "legends[0].layout",
+          key: "legends[1].layout",
           name: "布局",
           type: "select",
           options: {
@@ -210,7 +218,7 @@ export default function (this: Lefse) {
           },
         },
         {
-          key: "legends[0].align",
+          key: "legends[1].align",
           name: "水平对齐",
           type: "select",
           options: {
@@ -232,7 +240,7 @@ export default function (this: Lefse) {
           },
         },
         {
-          key: "legends[0].verticalAlign",
+          key: "legends[1].verticalAlign",
           name: "垂直对齐",
           type: "select",
           options: {

@@ -1,6 +1,8 @@
 import Konva from "konva";
 import KnovaUtils from "@/utils/Knova";
+import { merge } from "highcharts";
 export interface ILegendOptions {
+  enabled?: boolean;
   items: ILegendItemOptions[];
   layout: "horizontal" | "vertical";
   x: number;
@@ -14,6 +16,10 @@ export interface ILegendOptions {
   itemMarginBottom: number;
   symbolPadding: number;
   itemDistance: number;
+  borderWidth?: number;
+  borderColor?: string;
+  background?: string;
+  borderRadius?: number;
 }
 
 interface ILegendItemOptions {
@@ -29,9 +35,11 @@ interface ILegendItem extends ILegendItemOptions {
 type Postion = { x: number; y: number };
 
 export default class Legend {
-  group: Konva.Group | undefined;
+  group!: Konva.Group;
+  itemsGroup!: Konva.Group;
   layer: Konva.Layer;
-  canvasSize: [number, number];
+  background!: Konva.Rect;
+  canvasSize: number[];
   items: ILegendItem[] = [];
   options: ILegendOptions;
 
@@ -42,7 +50,7 @@ export default class Legend {
   constructor(
     options: ILegendOptions,
     layer: Konva.Layer,
-    canvasSize: [number, number],
+    canvasSize: number[],
   ) {
     this.layer = layer;
     this.canvasSize = canvasSize;
@@ -57,7 +65,13 @@ export default class Legend {
     };
   }
 
-  update(items: ILegendItemOptions[]) {
+  update(options: Partial<ILegendOptions>) {
+    this.options = merge(this.options, options);
+
+    this.render();
+  }
+
+  setItems(items: ILegendItemOptions[]) {
     let minus = this.options.items.length - items.length;
 
     while (minus > 0) {
@@ -94,11 +108,11 @@ export default class Legend {
     if (!existItem) {
       const symbol = new Konva.Rect(symbolAttr);
 
-      this.group?.add(symbol);
+      this.itemsGroup?.add(symbol);
 
       const text = new Konva.Text(textAttr);
 
-      this.group?.add(text);
+      this.itemsGroup?.add(text);
 
       this.items.push({
         ...item,
@@ -110,20 +124,16 @@ export default class Legend {
       existItem.symbol.setAttrs(symbolAttr);
       existItem.text.setAttrs(textAttr);
     }
-    // .text(
-    //   item.name,
-    //   x + this.symbolWidth + this.options.symbolPadding,
-    //   y + this.symbolHeight / 2,
-    // )
-    // .attr({})
-    // .css({
-    //   ...this.options.itemStyle,
-    //   "dominant-baseline": "central",
-    // })
-    // .add(this.group);
 
-    const tWidth = existItem.text.getWidth(),
+    let tWidth = existItem.text.getWidth(),
       tHeight = existItem.text.getHeight();
+
+    if (tHeight < this.symbolHeight) {
+      existItem.text.setAttrs({
+        y: textAttr.y + (this.symbolHeight - tHeight) / 2,
+      });
+      tHeight = this.symbolHeight;
+    }
 
     if (this.options.layout === "horizontal") {
       x +=
@@ -150,28 +160,79 @@ export default class Legend {
     this.options.items.forEach((item, i) => {
       position = this.renderItem(item, i, position);
     });
+
+    return this._updateBackground();
   }
 
-  render() {
-    const layer = this.layer;
-    this.group = new Konva.Group({
-      x: 0,
-      y: 0,
-      id: "legend",
-      draggable: true,
-      zIndex: 20,
-      dragBoundFunc: function (this: any, pos: any) {
-        return KnovaUtils.dragLimitInLayer(this, layer, pos);
-      },
+  _updateBackground() {
+    const groupBBox = this.itemsGroup.getClientRect();
+
+    const gWidth = groupBBox.width,
+      gHeight = groupBBox.height;
+
+    this.background.setAttrs({
+      x: -this.margin, //-spacing[3],
+      y: -this.margin * 2,
+      width: gWidth + this.margin * 2,
+      height: gHeight + this.margin * 2,
     });
 
-    this.layer.add(this.group);
+    return {
+      gWidth,
+      gHeight,
+    };
+  }
+
+  reflow() {}
+
+  render() {
+    if (this.options.enabled === false) {
+      this.group.setAttr("opacity", 0);
+      return false;
+    }
+
+    const layer = this.layer;
+    if (!this.group) {
+      this.group = new Konva.Group({
+        x: 0,
+        y: 0,
+        id: "legend",
+        draggable: true,
+        zIndex: 20,
+        dragBoundFunc: function (this: any, pos: any) {
+          return KnovaUtils.dragLimitInLayer(this, layer, pos);
+        },
+      });
+
+      this.itemsGroup = new Konva.Group({
+        id: "legend-container",
+      });
+
+      this.layer.add(this.group);
+
+      this.group.add(this.itemsGroup);
+
+      this.background = new Konva.Rect({
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+        fill: this.options.background || undefined,
+        strokeWidth: this.options.borderWidth || 0,
+        stroke: this.options.borderColor || "#000",
+        cornerRadius: this.options.borderRadius || 0,
+      });
+
+      this.group.add(this.background);
+    } else {
+      this.group.setAttr("opacity", 1);
+    }
 
     this.symbolWidth = this.options.symbolWidth || 20;
     this.symbolHeight = this.options.symbolHeight || 10;
     this.margin = this.options.margin || 12;
 
-    this.renderItems();
+    const { gWidth, gHeight } = this.renderItems();
     // let position: Postion = {
     //   x: 0,
     //   y: -this.margin,
@@ -181,13 +242,25 @@ export default class Legend {
     //   position = this.renderItem(item, i, position);
     // });
 
-    const groupBBox = this.group.getClientRect();
+    // const groupBBox = this.group.getClientRect();
 
-    const gWidth = groupBBox.width,
-      gHeight = groupBBox.height;
+    // const gWidth = groupBBox.width,
+    //   gHeight = groupBBox.height;
     let x, y;
 
-    const spacing = [10, 10, 10, 10];
+    const spacing = [
+      this.canvasSize[2],
+      this.canvasSize[3],
+      this.canvasSize[4],
+      this.canvasSize[5],
+    ];
+
+    this.background.setAttrs({
+      x: -this.margin, //-spacing[3],
+      y: -this.margin * 2,
+      width: gWidth + this.margin * 2,
+      height: gHeight + this.margin * 2,
+    });
 
     switch (this.options.align) {
       case "left":
@@ -216,8 +289,8 @@ export default class Legend {
     }
 
     this.group.position({
-      x,
-      y,
+      x: x + (this.options.x || 0),
+      y: y + (this.options.y || 0),
     });
   }
 }

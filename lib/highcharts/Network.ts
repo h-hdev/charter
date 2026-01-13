@@ -30,9 +30,17 @@ export default class Network extends Highcharter {
       credits: {
         enabled: false,
       },
+      title: {
+        text: null,
+        style: {
+          fontSize: "20px",
+          color: "#333",
+          fontWeight: "bold",
+        },
+      },
     };
-    let options = super._getOptions();
 
+    let options = super._getOptions();
     let networkOptions = this.userOptions.network;
 
     let nodes: NodeOption[] = [];

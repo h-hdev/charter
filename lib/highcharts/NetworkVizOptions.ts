@@ -2,6 +2,7 @@ import Network from "./Network";
 import { getBasicOptions } from "./VizOptions";
 export default function (this: Network) {
   const options = (this.obj.chart as any).options;
+  console.log(options);
   return [
     getBasicOptions(options),
     {

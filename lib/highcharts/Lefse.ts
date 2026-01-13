@@ -52,6 +52,13 @@ export default class Lefse extends Highcharter {
     return typeof highlight === "string" ? highlight : defaultColor;
   }
 
+  setOption(key: string, value: any): void {
+    if (key.startsWith("legend.")) {
+      key = key.replace("legend.", "legends[0].");
+    }
+    super.setOption(key, value);
+  }
+
   static translateOptions(lefse: ILefseOption): Record<string, any> {
     const { groups, groupPadding } = lefse;
 
@@ -76,7 +83,6 @@ export default class Lefse extends Highcharter {
       {
         type: "arctree",
         data: [],
-        color: "#000",
         showInLegend: false,
         linkedTo: "main-bubble",
       },
@@ -213,6 +219,9 @@ export default class Lefse extends Highcharter {
             },
           },
         },
+        arctree: {
+          color: "#000",
+        },
         arcbubble: {
           maxSize: 10,
           minSize: 3,
@@ -231,6 +240,7 @@ export default class Lefse extends Highcharter {
     ) {
       delete this.userOptions.treeLegend;
     } else {
+      console.log(this.userOptions);
       options.legends = [
         {
           ...(this.userOptions.legend || {

@@ -1,0 +1,20 @@
+1、CCA图：
+demo:http://demo.jianshukeji.com/20201026/index.html?type=cca
+文档：http://demo.jianshukeji.com/20201026/docs.html
+js:http://demo.jianshukeji.com/20201026/index.bbed8121c4.js
+2、PCOA图
+demo:http://demo.jianshukeji.com/20201026/index.html?type=pcoa
+文档：http://demo.jianshukeji.com/20201026/docs.html
+3、Venn图
+http://demo.jianshukeji.com/20201026/index.html?type=venn
+4、随机森林：https://demo.jianshukeji.com/20201026/index.html?type=roc
+5、Simper： https://demo.jianshukeji.com/20201026/index.html?type=simper
+6、tTest:http://demo.jianshukeji.com/20201026/index.html?type=tTest 
+7、Ternary：https://demo.jianshukeji.com/20201026/index.html?type=ternary
+8、network：http://demo.jianshukeji.com/20201026/index.html?type=network
+9、UPGMA：https://demo.jianshukeji.com/20201026/index.html?type=upgma
+
+https://shimo.im/sheets/ZJWtkURdfQAp2U6q/ls4w3/ 《highchart插件沟通》
+https://demo.jianshukeji.com/20201026/issue.html
+https://shimo.im/sheets/6yGVRyT3QqT6VW9c/ls4w3/
+https://shimo.im/sheets/6yGVRyT3QqT6VW9c/0UdYj/

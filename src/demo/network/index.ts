@@ -18,13 +18,25 @@ export default {
     chart = new Chart(
       container,
       {
+        chart: {
+          width: 1000,
+          height: 800,
+          marginTop: 20,
+          marginRight: 20,
+          marginBottom: 20,
+          marginLeft: 20,
+          plotBorderWidth: 1,
+          plotBorderColor: "#000",
+          plotBorderRadius: 5,
+          plotBackgroundColor: "#fff",
+        },
         title: {
           text: "network",
           // align: "left",
-          style: {
-            fontSize: "20px",
-            color: "red",
-          },
+          // style: {
+          //   fontSize: "20px",
+          //   color: "red",
+          // },
           // verticalAlign: "middle",
           // x: 100,
           // y: 100,
@@ -54,6 +66,25 @@ export default {
           layout: "vertical",
           align: "left",
           verticalAlign: "middle",
+          // x: 200,
+          // y: 20,
+          // symbolWidth: 30,
+          // symbolHeight: 20,
+          borderWidth: 1,
+          borderRadius: 5,
+          // background: "rgba(0, 0, 0, 0.5)",
+        },
+        tooltip: {
+          formatter: function (node: any) {
+            return (
+              "<b>name</b>: " +
+              node.name +
+              "<br><b>group</b>:" +
+              node.group +
+              "<br><b>value</b>: " +
+              node.value
+            );
+          },
         },
         network: {
           nodes,

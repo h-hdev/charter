@@ -248,10 +248,15 @@ export default class GenusTree extends Highcharter {
     nodes: any,
     selectedGenus: Record<string, Record<string, number>>,
     categoryGroup: Record<string, string[]>,
+    size: number,
   ) {
     let result = GenusTree.parseNodes(nodes);
 
     let paneSpace = 5;
+
+    if (!size || size < 20 || size > 80) {
+      size = 65;
+    }
 
     let pane: Record<
       string,
@@ -270,7 +275,7 @@ export default class GenusTree extends Highcharter {
         index: 0,
         options: {
           innerSize: 0,
-          size: "65%",
+          size: `${size}%`,
           startAngle: paneSpace,
           endAngle: 360 - paneSpace,
         },
@@ -278,7 +283,7 @@ export default class GenusTree extends Highcharter {
       column: {
         index: 1,
         options: {
-          innerSize: "65%",
+          innerSize: `${size}%`,
           size: "100%",
           startAngle: paneSpace,
           endAngle: 360 - paneSpace,
@@ -458,6 +463,13 @@ export default class GenusTree extends Highcharter {
           },
         },
       });
+    } else if (key === "genus.size") {
+      this.obj.chart.update({
+        pane: this.options.pane.map((p: any, i: number) => {
+          p[i === 0 ? "size" : "innerSize"] = value + "%";
+          return p;
+        }),
+      });
     } else {
       super.setOption(key, value);
     }
@@ -528,6 +540,7 @@ export default class GenusTree extends Highcharter {
       this.userOptions.genus.data,
       this.userOptions.genus.selectedGenus,
       this.userOptions.genus.categoryGroup,
+      this.userOptions.genus.size,
     );
 
     genusChartOptions.yAxis[1] = {

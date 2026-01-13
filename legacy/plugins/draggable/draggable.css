@@ -1,0 +1,25 @@
+.draggable-wrapper {
+    position: absolute;
+    color: red;
+    /* border: 1px dashed red; */
+    cursor: move;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.font {
+    /* padding: 5px; */
+    /* padding: 5px 10px; */
+    /* border: 1px solid red; */
+    overflow-wrap: normal;
+    overflow: hidden;
+    height: 100%;
+}
+
+.font .input {
+    width: 100%;
+    height: 100%;
+    outline: none;
+    border: none;
+    position: absolute;
+}

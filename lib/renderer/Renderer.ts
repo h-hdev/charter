@@ -12,5 +12,7 @@ export default class Renderer {
     return div;
   }
 
-  group(id: string) {}
+  group(id: string) {
+    console.log(id);
+  }
 }

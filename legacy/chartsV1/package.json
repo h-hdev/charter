@@ -1,0 +1,12 @@
+{
+  "name": "v1",
+  "scripts": {
+    "build": "vite build"
+  },
+  "dependencies": {
+    "highcharts": "10.3.2"
+  },
+  "devDependencies": {
+    "vite": "^6.3.1"
+  }
+}

@@ -47,7 +47,7 @@ export abstract class Plot extends VizBase {
   templateOptions: ITemplateOptions;
   textEditor: TextEditor | undefined;
   constructor(
-    container: HTMLDivElement,
+    container: HTMLElement,
     options: IChartOptions,
     templateOptions: ITemplateOptions,
   ) {
