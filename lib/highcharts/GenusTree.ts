@@ -360,6 +360,10 @@ export default class GenusTree extends Highcharter {
         {
           pane: pane.column.index,
           showLastLabel: true,
+          endOnTick: true,
+          labels: {
+            allowOverlap: true,
+          },
         },
       ],
 
