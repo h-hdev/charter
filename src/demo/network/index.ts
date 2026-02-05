@@ -63,6 +63,7 @@ export default {
         },
 
         legend: {
+          enabled: false,
           layout: "vertical",
           align: "left",
           verticalAlign: "middle",

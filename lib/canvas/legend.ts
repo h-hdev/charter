@@ -100,10 +100,16 @@ export default class Legend {
         fill: item.color,
       },
       textAttr = {
+        fontSize: this.itemStyle.fontSize,
+        fontStyle:
+          (this.itemStyle.fontStyle ? this.itemStyle.fontStyle + " " : "") +
+          this.itemStyle.fontWeight,
+        fill: this.itemStyle.color,
         text: item.name,
         x: x + this.symbolWidth + this.options.symbolPadding,
         y: y, // + this.symbolHeight / 2,
       };
+    console.log(textAttr);
 
     if (!existItem) {
       const symbol = new Konva.Rect(symbolAttr);
@@ -157,6 +163,18 @@ export default class Legend {
       y: -this.margin,
     };
 
+    this.itemStyle = merge(
+      {
+        color: "#333333",
+        cursor: "pointer",
+        fontSize: "10px",
+        fontWeight: "bold",
+      },
+      this.options.itemStyle,
+    );
+
+    this.itemStyle.fontSize = parseInt(this.itemStyle.fontSize);
+
     this.options.items.forEach((item, i) => {
       position = this.renderItem(item, i, position);
     });
@@ -187,7 +205,9 @@ export default class Legend {
 
   render() {
     if (this.options.enabled === false) {
-      this.group.setAttr("opacity", 0);
+      if (this.group) {
+        this.group.setAttr("opacity", 0);
+      }
       return false;
     }
 
@@ -260,6 +280,10 @@ export default class Legend {
       y: -this.margin * 2,
       width: gWidth + this.margin * 2,
       height: gHeight + this.margin * 2,
+      fill: this.options.background || undefined,
+      strokeWidth: this.options.borderWidth || 0,
+      stroke: this.options.borderColor || "#000",
+      cornerRadius: this.options.borderRadius || 0,
     });
 
     switch (this.options.align) {

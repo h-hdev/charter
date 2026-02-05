@@ -120,6 +120,8 @@ export default class Network extends Plot {
       this.userOptions,
     );
 
+    r.legend.itemStyle.fontSize = "10px";
+
     return r;
   }
 
@@ -281,7 +283,31 @@ export default class Network extends Plot {
           },
         ],
       },
-
+      {
+        name: "图例",
+        items: [
+          {
+            name: "图例开关",
+            key: "legend.enabled",
+            type: "checkbox",
+          },
+          {
+            name: "边框样色",
+            key: "legend.borderColor",
+            type: "color",
+          },
+          {
+            name: "边框大小",
+            key: "legend.borderWidth",
+            type: "number",
+          },
+          {
+            name: "文字样式",
+            key: "legend.itemStyle",
+            type: "font",
+          },
+        ],
+      },
       {
         name: "图形配置",
         items: [
