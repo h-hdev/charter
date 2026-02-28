@@ -109,7 +109,6 @@ export default class Legend {
         x: x + this.symbolWidth + this.options.symbolPadding,
         y: y, // + this.symbolHeight / 2,
       };
-    console.log(textAttr);
 
     if (!existItem) {
       const symbol = new Konva.Rect(symbolAttr);
@@ -159,8 +158,8 @@ export default class Legend {
 
   renderItems() {
     let position: Postion = {
-      x: 0,
-      y: -this.margin,
+      x: this.padding,
+      y: this.padding + this.titleHeight,
     };
 
     this.itemStyle = merge(
@@ -186,13 +185,15 @@ export default class Legend {
     const groupBBox = this.itemsGroup.getClientRect();
 
     const gWidth = groupBBox.width,
-      gHeight = groupBBox.height;
+      gHeight = groupBBox.height + this.titleHeight;
 
     this.background.setAttrs({
-      x: -this.margin, //-spacing[3],
-      y: -this.margin * 2,
-      width: gWidth + this.margin * 2,
-      height: gHeight + this.margin * 2,
+      x: 0, //-spacing[3],
+      y: 0,
+      width:
+        (gWidth > this.titleWidth ? gWidth : this.titleWidth) +
+        this.padding * 2,
+      height: gHeight + this.padding * 2,
     });
 
     return {
@@ -251,8 +252,58 @@ export default class Legend {
     this.symbolWidth = this.options.symbolWidth || 20;
     this.symbolHeight = this.options.symbolHeight || 10;
     this.margin = this.options.margin || 12;
+    this.padding = this.options.padding || 8;
+
+    const titleOptions = this.options.title;
+
+    this.titleHeight = 0;
+    this.titleWidth = 0;
+
+    if (titleOptions && titleOptions.text) {
+      const style = {
+        ...{
+          fontSize: "14px",
+          fontWeight: "bold",
+          color: "#000",
+        },
+        ...titleOptions.style,
+      };
+
+      if (style.fontSize.endsWith("em")) {
+        style.fontSize = parseFloat(style.fontSize) * 14;
+      }
+
+      const titleAttr = {
+        fontSize: style.fontSize,
+        fontStyle:
+          (style.fontStyle ? style.fontStyle + " " : "") + style.fontWeight,
+        fill: style.color,
+        text: titleOptions.text,
+        x: this.padding,
+        y: this.padding, //-this.margin - style.fontSize - 5, // - this.symbolHeight - 10,
+      };
+
+      if (this.title) {
+        this.title.setAttrs(titleAttr);
+      } else {
+        this.title = new Konva.Text(titleAttr);
+        this.group.add(this.title);
+      }
+
+      this.titleHeight = this.title.getHeight() + this.padding;
+      this.titleWidth = this.title.getWidth();
+      // titleHeight = style.fontSize + 5;
+      // let tWidth = existItem.text.getWidth(),
+      //   tHeight = existItem.text.getHeight();
+    } else if (this.title) {
+      // this.title.
+    }
 
     const { gWidth, gHeight } = this.renderItems();
+
+    // gHeight += 20;
+
+    // gHeight += this.symbolHeight;
     // let position: Postion = {
     //   x: 0,
     //   y: -this.margin,
@@ -276,10 +327,12 @@ export default class Legend {
     ];
 
     this.background.setAttrs({
-      x: -this.margin, //-spacing[3],
-      y: -this.margin * 2,
-      width: gWidth + this.margin * 2,
-      height: gHeight + this.margin * 2,
+      x: 0, //-this.margin, //-spacing[3],
+      y: 0, //-this.margin * 2 - this.titleHeight,
+      width:
+        (this.titleWidth > gWidth ? this.titleWidth : gWidth) +
+        this.padding * 2,
+      height: gHeight + this.padding * 2,
       fill: this.options.background || undefined,
       strokeWidth: this.options.borderWidth || 0,
       stroke: this.options.borderColor || "#000",
@@ -306,7 +359,7 @@ export default class Legend {
         // y = spacing[0] + this.margin + this.chart.titleOffset[0] / 2;
         break;
       case "bottom":
-        y = this.canvasSize[1] - gHeight - this.margin;
+        y = this.canvasSize[1] - gHeight - this.margin * 2;
         break;
       default:
         y = spacing[0] + this.margin;

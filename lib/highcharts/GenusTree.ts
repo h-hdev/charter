@@ -110,7 +110,6 @@ export default class GenusTree extends Highcharter {
         points.push(point);
 
         if (point.isLeaf) {
-          point.y = 12;
           let leafName = tree.name.replace(/\'/g, "");
           categories.push(leafName);
           leafs[leafName] = {
@@ -213,6 +212,7 @@ export default class GenusTree extends Highcharter {
     categoryGroup: Record<string, string[]>,
     leafs: LeafNameMap,
     size: number,
+    yMax: number,
   ) {
     return Object.keys(categoryGroup).map((group) => {
       return {
@@ -228,12 +228,12 @@ export default class GenusTree extends Highcharter {
           return {
             name: leaf.name,
             x: leaf.x - 0.5,
-            y: leaf.y + 1,
+            y: yMax, //leaf.y + 1,
             x1: leaf.x + 0.5,
             linkedTo: "arctree",
             yLength: size,
             linker: [
-              [leaf.x, leaf.y + 1],
+              [leaf.x, yMax],
               [leaf.x, leaf.linkedTo[1]],
               [leaf.linkedTo[0], leaf.linkedTo[1]],
             ],
@@ -276,6 +276,7 @@ export default class GenusTree extends Highcharter {
         options: {
           innerSize: 0,
           size: `${size}%`,
+
           startAngle: paneSpace,
           endAngle: 360 - paneSpace,
         },
@@ -322,6 +323,7 @@ export default class GenusTree extends Highcharter {
       categoryGroup,
       result.leafs,
       maxDataLabelLength,
+      result.yAxis.max,
     );
 
     return {

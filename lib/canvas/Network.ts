@@ -23,8 +23,8 @@ export interface INetworkOptions {
     lineWidth: number;
     lineColor: string;
     maxLength: number;
-    minSize: number;
-    maxSize: number;
+    // minSize: number;
+    // maxSize: number;
     dataMapping: Record<string, string>;
   };
   legend?: any;
@@ -68,8 +68,8 @@ const defaultOptions: INetworkOptions = {
   link: {
     lineWidth: 1,
     lineColor: "#ddd",
-    minSize: 1,
-    maxSize: 3,
+    // minSize: 1,
+    // maxSize: 3,
     maxLength: 20,
     dataMapping: {
       id: "id",
@@ -348,21 +348,21 @@ export default class Network extends Plot {
           },
 
           {
-            name: "线条最小宽度",
-            key: "network.link.minSize",
+            name: "线条宽度",
+            key: "network.link.lineWidth",
             type: "number",
             options: {
               // value: "#999",
             },
           },
-          {
-            name: "线条最大宽度",
-            key: "network.link.maxSize",
-            type: "number",
-            options: {
-              // value: "#999",
-            },
-          },
+          // {
+          //   name: "线条最大宽度",
+          //   key: "network.link.maxSize",
+          //   type: "number",
+          //   options: {
+          //     // value: "#999",
+          //   },
+          // },
           {
             name: "数据标签开关",
             key: "network.dataLabels.enabled",
@@ -513,7 +513,7 @@ export default class Network extends Plot {
     const linkAttrs = {
       points: [link.source.x, link.source.y, link.target.x, link.target.y],
       stroke: this.options.network.link.lineColor,
-      strokeWidth: this.obj.linkWidthScale(link.value),
+      strokeWidth: this.options.network.link.lineWidth, // this.obj.linkWidthScale(link.value),
     };
     if (!link.graph) {
       link.graph = new Konva.Line(linkAttrs);
@@ -676,16 +676,16 @@ export default class Network extends Plot {
             : d3.scaleLinear().domain(scoreExtent).range(values);
         },
       },
-      linkWidthScale: {
-        keys: ["network.link.minSize", "network.link.maxSize"],
-        // @ts-ignore
-        createOrUpdate: function (values: any[], isUpdate?: boolean) {
-          const linkWidth: any = d3.extent(this.obj.links, (d: any) => d.value);
-          return linkWidth[0] === linkWidth[1]
-            ? () => 1
-            : d3.scaleLinear().domain(linkWidth).range(values);
-        },
-      },
+      // linkWidthScale: {
+      //   keys: ["network.link.minSize", "network.link.maxSize"],
+      //   // @ts-ignore
+      //   createOrUpdate: function (values: any[], isUpdate?: boolean) {
+      //     const linkWidth: any = d3.extent(this.obj.links, (d: any) => d.value);
+      //     return linkWidth[0] === linkWidth[1]
+      //       ? () => 1
+      //       : d3.scaleLinear().domain(linkWidth).range(values);
+      //   },
+      // },
     };
 
     const networkOptions = this.options.network;

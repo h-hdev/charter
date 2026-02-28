@@ -113,6 +113,14 @@ export default function (this: Lefse) {
         //   },
         // },
         {
+          key: "legend.enabled",
+          name: "图例开关",
+          type: "checkbox",
+          options: {
+            value: options.legend.enabled,
+          },
+        },
+        {
           key: "legend.itemStyle",
           name: "图例1：文字样式",
           type: "font",
@@ -188,6 +196,14 @@ export default function (this: Lefse) {
               },
             ],
             value: 0,
+          },
+        },
+        {
+          key: "legends[1].enabled",
+          name: "图例2开关",
+          type: "checkbox",
+          options: {
+            value: this.options.legends[1].enabled || false,
           },
         },
         {

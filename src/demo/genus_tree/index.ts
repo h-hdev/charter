@@ -1,16 +1,18 @@
 import { Chart } from "@/index";
 import { Demo } from "../index";
-import { data, selectedGenus, categoryGroup, input } from "./genus_tree_data";
+// import * as GenusData from "./genus_tree_data";
 // import GenusTree from "@/highcharts/GenusTree";
 
 // const simpleExtends = function(a: any, b: any)
+// console.log(test.data);
+import GenusData from "./data";
 export default {
   name: "Genus Tree",
   code: "genus",
   sampleData: {
-    data: input,
-    selectedGenus,
-    categoryGroup,
+    data: "",
+    selectedGenus: GenusData.selectedGenus,
+    categoryGroup: GenusData.categoryGroup,
   },
   demo: (container: HTMLElement) => {
     // let chartOptions = GenusTree.parseData(data, selectedGenus, categoryGroup);
@@ -56,13 +58,16 @@ export default {
         yAxis: {
           gridLineWidth: 1,
           gridLineDashStyle: "Dash",
-          tickInterval: 100,
+          // max: 10,
+          // tickInterval: 100,
         },
-        genus: {
-          data: data,
-          selectedGenus,
-          categoryGroup,
-        },
+        genus: GenusData,
+
+        // {
+        //   data: data,
+        //   selectedGenus,
+        //   categoryGroup,
+        // }
         legend: {
           floating: true,
           title: {

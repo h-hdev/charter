@@ -32,6 +32,7 @@ export default {
         },
         title: {
           text: "network",
+
           // align: "left",
           // style: {
           //   fontSize: "20px",
@@ -63,10 +64,16 @@ export default {
         },
 
         legend: {
-          enabled: false,
+          title: {
+            text: "Long Legend Title Text Test",
+            style: {
+              color: "red",
+            },
+          },
+          // enabled: false,
           layout: "vertical",
-          align: "left",
-          verticalAlign: "middle",
+          align: "center",
+          verticalAlign: "top",
           // x: 200,
           // y: 20,
           // symbolWidth: 30,

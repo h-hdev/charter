@@ -190,4 +190,5 @@ phylum.split("\n").forEach((line) => {
   categoryGroup[group].push(name);
 });
 
+console.log(data, "...");
 export { data, selectedGenus, categoryGroup, input };

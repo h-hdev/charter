@@ -41,6 +41,10 @@ export default {
               verticalAlign: "top",
               offsetY: 0.2,
               autoRotation: true,
+              // format: "{point.name}",
+              formatter: function () {
+                return this.name[0].toUpperCase();
+              },
             },
           },
         },

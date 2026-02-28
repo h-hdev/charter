@@ -88,9 +88,7 @@ export class Highcharter extends Plot {
 
     this.afterRender();
   }
-
   afterRender() {}
-
   getVizOptions(): any[] {
     return [getBasicOptions(this.obj.chart.options)];
   }
@@ -107,10 +105,13 @@ export class Highcharter extends Plot {
   }
 
   export(type: ExportType, filename: string, options?: IChartOptions): void {
-    this.chart?.exporting.exportChart(
+    const chart = this.obj.chart;
+    chart.exporting.exportChart(
       {
         type: this._toExportFileType(type) as any,
         filename,
+        sourceWidth: chart.container.clientWidth,
+        sourceHeight: chart.container.clientHeight,
       },
       options,
     );
