@@ -185,10 +185,18 @@ export default class Lefse extends Highcharter {
       credits: {
         enabled: false,
       },
-      pane: {
-        innerSize: 0,
-        size: "95%",
-      },
+      pane: [
+        {
+          innerSize: 0,
+          size: "95%",
+          background: [
+            {
+              backgroundColor: null,
+              borderWidth: 0,
+            },
+          ],
+        },
+      ],
       xAxis: {
         tickInterval: 1,
         gridLineWidth: 0,
@@ -240,7 +248,6 @@ export default class Lefse extends Highcharter {
     ) {
       delete this.userOptions.treeLegend;
     } else {
-      console.log(this.userOptions);
       options.legends = [
         {
           ...(this.userOptions.legend || {

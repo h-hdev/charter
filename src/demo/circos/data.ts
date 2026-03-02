@@ -37,6 +37,4 @@ relative.split("\n").forEach((line, lineNo) => {
   }
 });
 
-console.log(links);
-
 export { links };

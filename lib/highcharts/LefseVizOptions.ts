@@ -3,7 +3,6 @@ import { getBasicOptions } from "./VizOptions";
 
 export default function (this: Lefse) {
   const options = (this.obj.chart as any).options;
-  console.log(options);
   return [
     getBasicOptions(options),
     {

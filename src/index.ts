@@ -79,7 +79,7 @@ function createDemo(index: number, updateLocation?: boolean) {
       interactiveContainer,
       demo.getVizOptions(),
       (code: string, value: any) => {
-        console.log(code, value);
+        // console.log(code, value);
         demo.setOption(code, value);
         // if (widget.options.group === 'export') {
         // 	this.exportOptions[code] = value;
@@ -93,7 +93,7 @@ function createDemo(index: number, updateLocation?: boolean) {
         // }
       },
     );
-    console.log(interactive);
+    // console.log(interactive);
   } else {
     demo.on("ready", (data: any) => {
       // if (ev.type === "ready") {

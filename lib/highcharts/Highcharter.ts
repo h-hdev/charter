@@ -112,6 +112,7 @@ export class Highcharter extends Plot {
         filename,
         sourceWidth: chart.container.clientWidth,
         sourceHeight: chart.container.clientHeight,
+        // url: "http://export.hcharts.cn",
       },
       options,
     );
